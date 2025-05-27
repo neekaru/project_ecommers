@@ -12,7 +12,7 @@
           <style>
          /* Anda bisa menyesuaikan warna merah ini agar lebih mirip dengan gambar */
         .navbar-custom {
-            background-color: #B11C22; /* Warna merah dari screenshot (perkiraan) */
+            background-color: #B11C22; /* Warna merah dari screenshot  */
         }
         .navbar-custom .navbar-brand img {
             max-height: 50px; /* Sesuaikan tinggi logo */
