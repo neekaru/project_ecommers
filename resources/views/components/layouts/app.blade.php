@@ -37,9 +37,9 @@
         }
 
         .promo-section {
-            background-color: #ffffff; /* Latar belakang setiap kartu promosi putih */
+            background-color: #ffffff; /*Latar belakang setiap kartu promosi putih */
             padding: 30px;
-            margin-bottom: 30px; /* Jarak antar komponen */
+            margin-bottom: 40px; /* Jarak antar komponen */
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.05);
         }
@@ -61,12 +61,13 @@
         }
 
         .promo-section .btn-promo {
-            background-color: #28a745; /* Warna hijau untuk tombol */
+            background-color:rgb(53, 168, 79); /* Warna hijau untuk tombol */
             border-color: #28a745;
             color: white;
             font-weight: bold;
             padding: 10px 25px;
             border-radius: 20px; /* Tombol lebih rounded */
+            box-shadow: 0px 6px 1px rgba(0, 0, 0, 0.5);
         }
 
         .promo-section .btn-promo:hover {
@@ -92,35 +93,52 @@
                 font-size: 1.5rem;
             }
         }
-                .footer-custom {
-            background-color: #343a40; /* Warna gelap seperti di gambar, Bootstrap bg-dark */
-            color: #f8f9fa; /* Warna teks terang, Bootstrap text-light */
+        .footer-custom {
+            background-color: #343a40;
+            color: #f8f9fa;
         }
+
         .footer-custom h4 {
-            margin-bottom: 1rem;
             font-weight: bold;
+            margin-bottom: 1rem;
+            color: #f8f9fa;
         }
-        .footer-custom p, .footer-custom li {
-            color: #adb5bd; /* Warna teks sedikit lebih redup untuk detail */
+
+        .footer-custom p,
+        .footer-custom li {
+            color: #adb5bd; /* Agar detail teks tidak terlalu kontras */
         }
-        .footer-custom strong, .footer-custom h4 {
-             color: #f8f9fa; /* Pastikan heading dan strong tetap terang */
+
+        .footer-custom strong {
+            color: #f8f9fa;
         }
-        .open-hours-list li {
+
+        .footer-custom .open-hours-list li {
             display: flex;
             justify-content: space-between;
-            padding-bottom: 0.25rem;
+            padding: 2px 0;
         }
-        .contact-item {
+
+        .footer-custom .contact-item {
             display: flex;
             align-items: center;
-            margin-bottom: 0.5rem;
+            gap: 8px;
+            margin-bottom: 8px;
         }
-        .contact-item i {
+
+        .footer-custom .contact-item i {
             font-size: 1.2rem;
-            margin-right: 0.75rem;
         }
-        
+
+        .footer-custom .left-gap {
+            padding-left: 20px;
+        }
+
+        .footer-custom .right-gap {
+            padding-right: 20px;
+        }
+
+
             </style>
     </head>
     <body>
