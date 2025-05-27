@@ -37,9 +37,9 @@
         }
 
         .promo-section {
-            background-color: #ffffff; /* Latar belakang setiap kartu promosi putih */
+            background-color: #ffffff; /*Latar belakang setiap kartu promosi putih */
             padding: 30px;
-            margin-bottom: 30px; /* Jarak antar komponen */
+            margin-bottom: 40px; /* Jarak antar komponen */
             border-radius: 8px;
             box-shadow: 0 4px 8px rgba(0,0,0,0.05);
         }

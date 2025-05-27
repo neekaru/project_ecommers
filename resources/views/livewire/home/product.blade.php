@@ -1,6 +1,6 @@
 <div class="container mt-5">
 
-    <section class="promo-section">
+    <section class="promo-section" style="color: ">
         <div class="row align-items-center">
             <div class="col-md-6">
                 <h2 class="promo-title">Waktunya manjain perut dengan <br>Paket Spesial <span class="highlight">Bebek Galak</span></h2>
@@ -15,7 +15,7 @@
         </div>
     </section>
 
-    <section class="promo-section">
+    <section class="promo-section" style="background-color: #F1F0F0">
         <div class="row align-items-center">
             <div class="col-md-6 order-md-2"> <h2 class="promo-title">Acara Makin Berkesan <br>dengan <span class="highlight">Tumpeng Spesial</span></h2>
                 <p class="promo-description">
