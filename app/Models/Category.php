@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Category extends Model
 {
-    // Kolom yang boleh diisi mass assignment namiraaa bau kambing
+    // Kolom yang boleh diisi mass assignment
     protected $fillable = [
         'image',
         'name',
