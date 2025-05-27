@@ -1,5 +1,5 @@
 <x-layouts.app>
-    @livewire('layout.header')
+    {{-- @livewire('layout.header') --}}
     @livewire('home.product')
-    @livewire('layout.footer')
+    {{-- @livewire('layout.footer') --}}
 </x-layouts.app>

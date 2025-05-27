@@ -12,7 +12,7 @@
           <style>
          /* Anda bisa menyesuaikan warna merah ini agar lebih mirip dengan gambar */
         .navbar-custom {
-            background-color: #B11C22; /* Warna merah dari screenshot  */
+            background-color: #B11C22; /* Warna merah dari screenshot (perkiraan) */
         }
         .navbar-custom .navbar-brand img {
             max-height: 50px; /* Sesuaikan tinggi logo */
@@ -120,9 +120,14 @@
             font-size: 1.2rem;
             margin-right: 0.75rem;
         }
+        
             </style>
     </head>
     <body>
-        {{ $slot }}
+        <div>
+            @livewire('layout.header')
+                {{ $slot }}
+            @livewire('layout.footer')
+        </div>
     </body>
 </html>

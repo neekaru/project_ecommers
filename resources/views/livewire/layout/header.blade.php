@@ -12,10 +12,10 @@
       <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
         <!-- Menu utama di sebelah kanan -->
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="#">Home</a>
+          <a class="nav-link active" aria-current="page" href="/">Home</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Menu</a>
+          <a class="nav-link" href="/menu">Menu</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="#">Contact</a>
