@@ -8,9 +8,9 @@
         <!-- Ulangi ini sesuai jumlah menu -->
         <div class="col-md-3 mb-4">
           <div class="card shadow-sm">
-            <img src="ayam-goreng.jpg" class="card-img-top" alt="Ayam Goreng">
+            <img src="{{ asset('icon/ayam bakar utuh.jpeg') }}" class="card-img-top" alt="Ayam Bakar">
             <div class="card-body">
-              <h6 class="card-title mb-1">Ayam Goreng</h6>
+              <h6 class="card-title mb-1">Ayam Bakar</h6>
               <p class="card-text text-danger fw-bold">Rp. 23.000</p>
               <a href="#" class="btn btn-outline-dark btn-sm float-end">🛒</a>
             </div>

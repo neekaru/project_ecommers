@@ -29,7 +29,34 @@ class AdminResource extends Resource
     {
         return $form
             ->schema([
-                //
+
+            //card
+            Forms\Components\Card::make()
+                ->schema([
+
+                //name
+                Forms\Components\TextInput::make('name')
+                    ->label('Name')
+                    ->placeholder('Name')
+                    ->required(),
+
+                //email
+                Forms\Components\TextInput::make('email')
+                    ->label('Email')
+                    ->placeholder('Email')
+                    ->unique(ignorable: fn ($record) => $record)
+                    ->required(),
+
+                //password
+                Forms\Components\TextInput::make('password')
+                    ->label('Password')
+                    ->placeholder('Password')
+                    ->dehydrateStateUsing(fn ($state) => $state ? bcrypt($state) : null)
+                    ->dehydrated(fn ($state) => filled($state)) // hanya mengubah password jika field diisi
+                    ->password(),
+
+                ])
+
             ]);
     }
 
@@ -37,7 +64,9 @@ class AdminResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('name')->searchable(),
+                Tables\Columns\TextColumn::make('email')->searchable(),
+                Tables\Columns\TextColumn::make('created_at')->dateTime(),
             ])
             ->filters([
                 //

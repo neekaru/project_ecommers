@@ -17,8 +17,13 @@ class CustomerResource extends Resource
 {
     protected static ?string $model = Customer::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Customers';
+    protected static ?string $navigationIcon = 'heroicon-o-user';
+    protected static ?string $navigationGroup = 'Users Management';
+
+    public static function canCreate(): bool
+    {
+        return false;
+    }
 
     public static function getNavigationSort(): ?int
     {
@@ -38,21 +43,9 @@ public static function table(Table $table): Table
 {
     return $table
         ->columns([
-            Tables\Columns\TextColumn::make('nama')
-                ->label('Nama')
-                ->searchable(),
-
-            Tables\Columns\TextColumn::make('email')
-                ->label('Email')
-                ->searchable(),
-
-            Tables\Columns\TextColumn::make('telepon')
-                ->label('Telepon')
-                ->searchable(),
-
-            Tables\Columns\TextColumn::make('alamat')
-                ->label('Alamat')
-                ->wrap(),
+           Tables\Columns\TextColumn::make('name')->searchable(),
+            Tables\Columns\TextColumn::make('email')->searchable(),
+            Tables\Columns\TextColumn::make('created_at')->dateTime(),
         ])
         ->filters([
             // Tambahkan filter jika perlu
@@ -79,9 +72,5 @@ public static function table(Table $table): Table
         return [
             'index' => Pages\ListCustomers::route('/'),
         ];
-    }
-        public static function canCreate(): bool
-    {
-        return false;
     }
 }

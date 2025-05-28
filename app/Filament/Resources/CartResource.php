@@ -17,8 +17,8 @@ class CartResource extends Resource
 {
     protected static ?string $model = Cart::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-        protected static ?string $navigationGroup = 'Master Data';
+    protected static ?string $navigationIcon = 'heroicon-o-shopping-cart';
+        protected static ?string $navigationGroup = 'Carts & Orders';
         public static function getNavigationSort(): ?int
     {
         return 1;
@@ -32,7 +32,7 @@ public static function form(Form $form): Form
                 ->schema([
                     // User (relasi ke users)
                     Forms\Components\Select::make('user_id')
-                        ->label('User')
+                        ->label('Customer')
                         ->relationship('user', 'name')  // asumsikan model User punya kolom name
                         ->searchable()
                         ->required(),
