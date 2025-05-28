@@ -5,6 +5,7 @@ namespace App\Filament\Resources;
 use App\Filament\Resources\ProductResource\Pages;
 use App\Filament\Resources\ProductResource\RelationManagers;
 use App\Models\Product;
+use App\Models\Category;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
@@ -57,9 +58,9 @@ public static function form(Form $form): Form
                         ->required(),
 
                     // Kategori
-                    Forms\Components\Select::make('kategori_id')
+                    Forms\Components\Select::make('category_id')
                         ->label('Kategori')
-                        ->relationship('kategori', 'nama') // Pastikan relasi dan nama field benar
+                        ->relationship('category', 'name') // Pastikan relasi dan nama field benar
                         ->searchable()
                         ->required(),
                 ])
@@ -89,7 +90,7 @@ public static function table(Table $table): Table
                 ->numeric(decimalPlaces: 0)
                 ->money('IDR', locale: 'id'),
 
-            Tables\Columns\TextColumn::make('kategori.nama')
+            Tables\Columns\TextColumn::make('category.name')
                 ->label('Kategori')
                 ->searchable(),
         ])

@@ -18,7 +18,7 @@ class OrderMethodResource extends Resource
     protected static ?string $model = OrderMethod::class;
 
     protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Customers';
+    protected static ?string $navigationGroup = 'Carts & Orders';
 
     public static function getNavigationSort(): ?int
     {
@@ -74,7 +74,7 @@ public static function table(Table $table): Table
 
             Tables\Columns\TextColumn::make('waktu_pengambilan')
                 ->label('Waktu Pengambilan')
-                ->time(),
+                ->dateTime(),
         ])
         ->filters([
             //

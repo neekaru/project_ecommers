@@ -18,6 +18,7 @@ class Product extends Model
             'deskripsi',
             'harga_dasar',
             'kategori_id',
+            'slug',
     ];
 
     /**

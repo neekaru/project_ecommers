@@ -21,8 +21,5 @@ class OrderMethod extends Model
         'waktu_pengambilan' => 'datetime:H:i',
     ];
 
-    public function checkout()
-    {
-        return $this->belongsTo(Checkout::class, 'checkout_id');
-    }
+ 
 }
