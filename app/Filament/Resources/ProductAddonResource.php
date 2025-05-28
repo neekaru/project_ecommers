@@ -17,7 +17,7 @@ class ProductAddonResource extends Resource
 {
     protected static ?string $model = ProductAddon::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-plus-circle';
     protected static ?string $navigationGroup = 'Master Data';
 
     public static function getNavigationSort(): ?int

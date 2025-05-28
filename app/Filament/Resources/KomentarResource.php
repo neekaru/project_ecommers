@@ -17,8 +17,8 @@ class KomentarResource extends Resource
 {
     protected static ?string $model = Komentar::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
-    protected static ?string $navigationGroup = 'Customers';
+    protected static ?string $navigationIcon = 'heroicon-o-chat-bubble-left';
+    protected static ?string $navigationGroup = 'Komentar & Rating';
 
     public static function getNavigationSort(): ?int
     {
