@@ -9,7 +9,6 @@ class OrderMethod extends Model
     protected $table = 'order_methods';
 
     protected $fillable = [
-        'checkout_id',
         'metode_pesanan',
         'dijadwalkan',
         'tanggal_pengambilan',
@@ -19,7 +18,7 @@ class OrderMethod extends Model
     protected $casts = [
         'dijadwalkan' => 'boolean',
         'tanggal_pengambilan' => 'date',
-        'waktu_pengambilan' => 'time',
+        'waktu_pengambilan' => 'datetime:H:i',
     ];
 
     public function checkout()
