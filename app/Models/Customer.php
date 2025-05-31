@@ -17,6 +17,7 @@ class Customer extends Authenticatable
         'email',
         'telepon',
         'alamat',
+<<<<<<< HEAD
         'password',
     ];
 
@@ -27,6 +28,11 @@ class Customer extends Authenticatable
 
     protected $casts = [
         'email_verified_at' => 'datetime',
+=======
+        'provider_id',
+        'provider_name',
+        'avatar',
+>>>>>>> d52a8bc339157c40cadeca0d0213e0c2c3bb42f2
     ];
 
     public function checkouts(): HasMany
