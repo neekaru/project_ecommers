@@ -13,7 +13,13 @@ class OrderMethod extends Model
         'dijadwalkan',
         'tanggal_pengambilan',
         'waktu_pengambilan',
+        'checkout_id', 
     ];
+
+    public function checkout()
+    {
+        return $this->belongsTo(Checkout::class);
+    }
 
     protected $casts = [
         'dijadwalkan' => 'boolean',
@@ -21,5 +27,10 @@ class OrderMethod extends Model
         'waktu_pengambilan' => 'datetime:H:i',
     ];
 
- 
+    protected static function booted()
+    {
+        static::creating(function ($orderMethod) {
+            $orderMethod->checkout_id = null;
+        });
+    }
 }
