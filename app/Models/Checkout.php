@@ -11,6 +11,7 @@ class Checkout extends Model
     protected $table = 'checkouts';
 
     protected $fillable = [
+        'product_id',
         'customer_id',
         'total_harga',
         'catatan',

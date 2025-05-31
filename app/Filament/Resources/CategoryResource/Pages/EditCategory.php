@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Filament\Resources\PesananResource\Pages;
+namespace App\Filament\Resources\CategoryResource\Pages;
 
-use App\Filament\Resources\PesananResource;
+use App\Filament\Resources\CategoryResource;
 use Filament\Actions;
 use Filament\Resources\Pages\EditRecord;
 
-class EditPesanan extends EditRecord
+class EditCategory extends EditRecord
 {
-    protected static string $resource = PesananResource::class;
+    protected static string $resource = CategoryResource::class;
 
     protected function getHeaderActions(): array
     {

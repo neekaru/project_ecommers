@@ -13,11 +13,12 @@ class Product extends Model
 
     // Mass assignable attributes
     protected $fillable = [
-        'gambar_produk',
-        'nama_produk',
-        'deskripsi',
-        'harga_dasar',
-        'kategori_id',
+            'gambar_produk',
+            'nama_produk',
+            'deskripsi',
+            'harga_dasar',
+            'kategori_id',
+            'slug',
     ];
 
     /**

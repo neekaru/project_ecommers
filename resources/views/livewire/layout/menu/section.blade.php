@@ -2,29 +2,53 @@
   <div class="container py-5">
     <!-- Ayam -->
     <section id="ayam">
-      <h4 class="fw-bold">Ayam</h4>
+      <h4 class="fw-bold">Menu Ayam</h4>
       <div class="row">
         <!-- Card Menu Item -->
         <!-- Ulangi ini sesuai jumlah menu -->
-     <div class="card" style="width: 18rem;">
-  <img src="Ayam goreng ungkep bawang putih + air kelapa by…jpg" class="card-img-top" alt="Ayam Goreng">
-  <div class="card-body">
-    <h5 class="card-title">Ayam Goreng</h5>
-    <div class="d-flex justify-content-between align-items-center">
-      <p class="card-text text-danger fw-bold mb-0">Rp. 23.000</p>
-      <a href="#" class="btn btn-outline-dark btn-sm rounded-circle">
-        <i class="fas fa-plus"></i>
-      </a>
-    </div>
-  </div>
-</div>
+        <div class="col-md-3 mb-4">
+          <div class="card shadow-sm">
+            <img src="ayam-goreng.jpg" class="card-img-top" alt="Ayam Goreng">
+            <div class="card-body">
+              <h6 class="card-title mb-1">Ayam Goreng</h6>
+              <p class="card-text text-danger fw-bold">Rp. 23.000</p>
+              <a href="#" class="btn btn-outline-dark btn-sm float-end">🛒</a>
+            </div>
+          </div>
+        </div>
+      </div>
     </section>
 
     <!-- Bebek -->
     <section id="bebek" class="mt-5">
-      <h4 class="fw-bold">Bebek</h4>
+      <h4 class="fw-bold">Menu Bebek</h4>
       <div class="row">
-        <!-- Copy Card sesuai jumlah menu -->
+        @php
+          $bebek = $products->filter(function($item) {
+            return optional($item->category)->name === 'Bebek';
+          });
+        @endphp
+        @forelse ($bebek as $item)
+          <div class="col-md-3 mb-4">
+            <div class="card shadow-sm">
+              @if($item->gambar_produk)
+                <img src="{{ asset('storage/' . $item->gambar_produk) }}" class="card-img-top" alt="{{ $item->nama_produk }}" style="height: 200px; object-fit: cover;">
+              @else
+                <img src="https://via.placeholder.com/300x200.png?text=No+Image" class="card-img-top" alt="No image available" style="height: 200px; object-fit: cover;">
+              @endif
+              <div class="card-body">
+                <h6 class="card-title mb-1">{{ $item->nama_produk }}</h6>
+                <p class="card-text text-secondary mb-1">Kategori: {{ $item->category ? $item->category->name : '-' }}</p>
+                <p class="card-text text-danger fw-bold">Rp. {{ number_format($item->harga_dasar, 0, ',', '.') }}</p>
+                <a href="#" class="btn btn-outline-dark btn-sm float-end">➕</a>
+              </div>
+            </div>
+          </div>
+        @empty
+          <div class="col-12">
+            <p class="text-center">Saat ini belum ada menu bebek.</p>
+          </div>
+        @endforelse
       </div>
     </section>
 
@@ -32,7 +56,32 @@
     <section id="paket" class="mt-5">
       <h4 class="fw-bold">Paket Spesial</h4>
       <div class="row">
-        <!-- Copy Card sesuai jumlah menu -->
+        @php
+          $paket = $products->filter(function($item) {
+            return optional($item->category)->name === 'Paket Spesial';
+          });
+        @endphp
+        @forelse ($paket as $item)
+          <div class="col-md-3 mb-4">
+            <div class="card shadow-sm">
+              @if($item->gambar_produk)
+                <img src="{{ asset('storage/' . $item->gambar_produk) }}" class="card-img-top" alt="{{ $item->nama_produk }}" style="height: 200px; object-fit: cover;">
+              @else
+                <img src="https://via.placeholder.com/300x200.png?text=No+Image" class="card-img-top" alt="No image available" style="height: 200px; object-fit: cover;">
+              @endif
+              <div class="card-body">
+                <h6 class="card-title mb-1">{{ $item->nama_produk }}</h6>
+                <p class="card-text text-secondary mb-1">Kategori: {{ $item->category ? $item->category->name : '-' }}</p>
+                <p class="card-text text-danger fw-bold">Rp. {{ number_format($item->harga_dasar, 0, ',', '.') }}</p>
+                <a href="#" class="btn btn-outline-dark btn-sm float-end">➕</a>
+              </div>
+            </div>
+          </div>
+        @empty
+          <div class="col-12">
+            <p class="text-center">Saat ini belum ada paket spesial.</p>
+          </div>
+        @endforelse
       </div>
     </section>
 
@@ -40,7 +89,32 @@
     <section id="tumpeng" class="mt-5">
       <h4 class="fw-bold">Tumpeng</h4>
       <div class="row">
-        <!-- Copy Card sesuai jumlah menu -->
+        @php
+          $tumpeng = $products->filter(function($item) {
+            return optional($item->category)->name === 'Tumpeng';
+          });
+        @endphp
+        @forelse ($tumpeng as $item)
+          <div class="col-md-3 mb-4">
+            <div class="card shadow-sm">
+              @if($item->gambar_produk)
+                <img src="{{ asset('storage/' . $item->gambar_produk) }}" class="card-img-top" alt="{{ $item->nama_produk }}" style="height: 200px; object-fit: cover;">
+              @else
+                <img src="https://via.placeholder.com/300x200.png?text=No+Image" class="card-img-top" alt="No image available" style="height: 200px; object-fit: cover;">
+              @endif
+              <div class="card-body">
+                <h6 class="card-title mb-1">{{ $item->nama_produk }}</h6>
+                <p class="card-text text-secondary mb-1">Kategori: {{ $item->category ? $item->category->name : '-' }}</p>
+                <p class="card-text text-danger fw-bold">Rp. {{ number_format($item->harga_dasar, 0, ',', '.') }}</p>
+                <a href="#" class="btn btn-outline-dark btn-sm float-end">➕</a>
+              </div>
+            </div>
+          </div>
+        @empty
+          <div class="col-12">
+            <p class="text-center">Saat ini belum ada tumpeng.</p>
+          </div>
+        @endforelse
       </div>
     </section>
 
@@ -48,7 +122,32 @@
     <section id="minuman" class="mt-5">
       <h4 class="fw-bold">Minuman</h4>
       <div class="row">
-        <!-- Copy Card sesuai jumlah menu -->
+        @php
+          $minuman = $products->filter(function($item) {
+            return optional($item->category)->name === 'Minuman';
+          });
+        @endphp
+        @forelse ($minuman as $item)
+          <div class="col-md-3 mb-4">
+            <div class="card shadow-sm">
+              @if($item->gambar_produk)
+                <img src="{{ asset('storage/' . $item->gambar_produk) }}" class="card-img-top" alt="{{ $item->nama_produk }}" style="height: 200px; object-fit: cover;">
+              @else
+                <img src="https://via.placeholder.com/300x200.png?text=No+Image" class="card-img-top" alt="No image available" style="height: 200px; object-fit: cover;">
+              @endif
+              <div class="card-body">
+                <h6 class="card-title mb-1">{{ $item->nama_produk }}</h6>
+                <p class="card-text text-secondary mb-1">Kategori: {{ $item->category ? $item->category->name : '-' }}</p>
+                <p class="card-text text-danger fw-bold">Rp. {{ number_format($item->harga_dasar, 0, ',', '.') }}</p>
+                <a href="#" class="btn btn-outline-dark btn-sm float-end">➕</a>
+              </div>
+            </div>
+          </div>
+        @empty
+          <div class="col-12">
+            <p class="text-center">Saat ini belum ada minuman.</p>
+          </div>
+        @endforelse
       </div>
     </section>
   </div>

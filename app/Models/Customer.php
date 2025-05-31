@@ -14,6 +14,9 @@ class Customer extends Model
         'email',
         'telepon',
         'alamat',
+        'provider_id',
+        'provider_name',
+        'avatar',
     ];
 
     public function checkouts(): HasMany
