@@ -28,4 +28,65 @@
         </div>
     </section>
 
+    <section class="featured-products-section mt-5 mb-5">
+        <div class="container">
+            <h3 class="text-center mb-4 fw-bold">Produk Unggulan Kami</h3>
+            <div class="row">
+                @forelse ($products as $item)
+                    <div class="col-md-4 col-sm-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            @if($item->gambar_produk)
+                                <img src="{{ asset('storage/' . $item->gambar_produk) }}" class="card-img-top" alt="{{ $item->nama_produk }}" style="height: 200px; object-fit: cover;">
+                            @else
+                                <img src="https://via.placeholder.com/300x200.png?text=No+Image" class="card-img-top" alt="No image available" style="height: 200px; object-fit: cover;">
+                            @endif
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">{{ $item->nama_produk }}</h5>
+                                <p class="card-text flex-grow-1">{{ \Illuminate\Support\Str::limit($item->deskripsi, 100) }}</p>
+                                <p class="card-text fw-bold text-success">Rp. {{ number_format($item->harga_dasar, 0, ',', '.') }}</p>
+                                <a href="/products/{{ $item->slug }}" wire:navigate class="btn btn-danger mt-auto">Lihat Produk</a>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-12">
+                        <p class="text-center">Saat ini belum ada produk unggulan.</p>
+                    </div>
+                @endforelse
+            </div>
+        </div>
+    </section>
+
+    <section class="featured-products-section mt-5 mb-5">
+        <div class="container">
+            <h3 class="text-center mb-4 fw-bold">Minuman</h3>
+            <div class="row">
+                @php
+                    $minuman = $products->where('category', 'minuman');
+                @endphp
+                @forelse ($minuman as $item)
+                    <div class="col-md-4 col-sm-6 mb-4">
+                        <div class="card h-100 shadow-sm">
+                            @if($item->gambar_produk)
+                                <img src="{{ asset('storage/' . $item->gambar_produk) }}" class="card-img-top" alt="{{ $item->nama_produk }}" style="height: 200px; object-fit: cover;">
+                            @else
+                                <img src="https://via.placeholder.com/300x200.png?text=No+Image" class="card-img-top" alt="No image available" style="height: 200px; object-fit: cover;">
+                            @endif
+                            <div class="card-body d-flex flex-column">
+                                <h5 class="card-title">{{ $item->nama_produk }}</h5>
+                                <p class="card-text flex-grow-1">{{ \Illuminate\Support\Str::limit($item->deskripsi, 100) }}</p>
+                                <p class="card-text fw-bold text-success">Rp. {{ number_format($item->harga_dasar, 0, ',', '.') }}</p>
+                                <a href="/products/{{ $item->slug }}" wire:navigate class="btn btn-primary mt-auto">Lihat Produk</a>
+                            </div>
+                        </div>
+                    </div>
+                @empty
+                    <div class="col-12">
+                        <p class="text-center">Saat ini belum ada minuman.</p>
+                    </div>
+                @endforelse
+            </div>
+        </div>
+    </section>
+
 </div>
