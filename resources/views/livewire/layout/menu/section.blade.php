@@ -6,17 +6,18 @@
       <div class="row">
         <!-- Card Menu Item -->
         <!-- Ulangi ini sesuai jumlah menu -->
-        <div class="col-md-3 mb-4">
-          <div class="card shadow-sm">
-            <img src="ayam-goreng.jpg" class="card-img-top" alt="Ayam Goreng">
-            <div class="card-body">
-              <h6 class="card-title mb-1">Ayam Goreng</h6>
-              <p class="card-text text-danger fw-bold">Rp. 23.000</p>
-              <a href="#" class="btn btn-outline-dark btn-sm float-end">🛒</a>
-            </div>
-          </div>
-        </div>
-      </div>
+     <div class="card" style="width: 18rem;">
+  <img src="Ayam goreng ungkep bawang putih + air kelapa by…jpg" class="card-img-top" alt="Ayam Goreng">
+  <div class="card-body">
+    <h5 class="card-title">Ayam Goreng</h5>
+    <div class="d-flex justify-content-between align-items-center">
+      <p class="card-text text-danger fw-bold mb-0">Rp. 23.000</p>
+      <a href="#" class="btn btn-outline-dark btn-sm rounded-circle">
+        <i class="fas fa-plus"></i>
+      </a>
+    </div>
+  </div>
+</div>
     </section>
 
     <!-- Bebek -->
