@@ -2,16 +2,17 @@
 
 namespace App\Filament\Resources;
 
-use App\Filament\Resources\RatingResource\Pages;
-use App\Filament\Resources\RatingResource\RelationManagers;
-use App\Models\Rating;
 use Filament\Forms;
-use Filament\Forms\Form;
-use Filament\Resources\Resource;
 use Filament\Tables;
+use App\Models\Rating;
+use App\Models\Product;
+use Filament\Forms\Form;
 use Filament\Tables\Table;
-use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Database\Eloquent\SoftDeletingScope;
+use Filament\Resources\Resource;
+use App\Models\TransactionDetail;
+use Filament\Forms\Components\Select;
+use Filament\Forms\Components\Textarea;
+use App\Filament\Resources\RatingResource\Pages;
 
 class RatingResource extends Resource
 {
@@ -29,47 +30,81 @@ class RatingResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Select::make('transaction_detail_id')
+                    ->label('Transaksi')
+                    ->options(function (): array {
+                        return TransactionDetail::with('product')->get()->mapWithKeys(function ($item) {
+                            // Gunakan id sebagai key, dan label yang informatif, misal: "ID:1 - Product Title"
+                            $productTitle = $item->product ? $item->product->title : 'Produk tidak diketahui';
+                            return [$item->id => "Transaksi #{$item->id} - {$productTitle}"];
+                        })->toArray();
+                    })
+                    ->searchable()
+                    ->required(),
+
+                Select::make('rating')
+                    ->label('Rating')
+                    ->options([
+                        1 => '⭐ 1',
+                        2 => '⭐⭐ 2',
+                        3 => '⭐⭐⭐ 3',
+                        4 => '⭐⭐⭐⭐ 4',
+                        5 => '⭐⭐⭐⭐⭐ 5',
+                    ])
+                    ->required(),
+
+                Select::make('customer_id')
+                    ->label('Customer')
+                    ->relationship('customer', 'name') // Pastikan relasi customer di model Rating sudah benar
+                    ->searchable()
+                    ->required(),
+
+                Select::make('product_id')
+                    ->label('Product')
+                    ->options(function (): array {
+                        // Only include products with a non-null title
+                        return Product::query()
+                            ->whereNotNull('nama_produk')
+                            ->get()
+                            ->pluck('nama_produk', 'id')
+                            ->filter(function ($title) {
+                                return $title !== null && $title !== '';
+                            })
+                            ->all();
+                    })
+                    ->searchable()
+                    ->required(),
+
+                Textarea::make('review')
+                    ->label('Review')
+                    ->placeholder('Tulis komentar Anda (opsional)')
+                    ->rows(4),
             ]);
     }
 
-public static function table(Table $table): Table
-{
-    return $table
-        ->columns([
-            Tables\Columns\TextColumn::make('product.nama_produk')
-                ->label('Produk')
-                ->searchable(),
 
-            Tables\Columns\TextColumn::make('customer.nama')
-                ->label('Customer')
-                ->searchable(),
-
-            Tables\Columns\TextColumn::make('rating')
-                ->label('Rating')
-                ->formatStateUsing(fn ($state) => str_repeat('⭐', $state)),
-
-            Tables\Columns\TextColumn::make('review')
-                ->label('Review')
-                ->limit(50)
-                ->wrap(),
-
-            Tables\Columns\TextColumn::make('created_at')
-                ->label('Dibuat Pada')
-                ->dateTime(),
-        ])
-        ->filters([
-            //
-        ])
-        ->actions([
-            Tables\Actions\EditAction::make(),
-        ])
-        ->bulkActions([
-            Tables\Actions\BulkActionGroup::make([
-                Tables\Actions\DeleteBulkAction::make(),
-            ]),
-        ]);
-}
+    public static function table(Table $table): Table
+    {
+        return $table
+            ->columns([
+                Tables\Columns\TextColumn::make('customer.name')->searchable(),
+                Tables\Columns\TextColumn::make('product.title')->searchable(),
+                Tables\Columns\TextColumn::make('rating'),
+                Tables\Columns\TextColumn::make('review'),
+                Tables\Columns\TextColumn::make('created_at')
+            ])
+            ->filters([
+                //
+            ])
+            ->actions([
+                Tables\Actions\EditAction::make(),
+            ])
+            ->bulkActions([
+                Tables\Actions\BulkActionGroup::make([
+                    Tables\Actions\DeleteBulkAction::make(),
+                ]),
+            ]);
+    }
 
 
     public static function getRelations(): array

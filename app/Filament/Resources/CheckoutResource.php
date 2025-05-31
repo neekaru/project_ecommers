@@ -17,7 +17,7 @@ class CheckoutResource extends Resource
 {
     protected static ?string $model = Checkout::class;
 
-    protected static ?string $navigationIcon = 'heroicon-o-rectangle-stack';
+    protected static ?string $navigationIcon = 'heroicon-o-credit-card';
     protected static ?string $navigationGroup = 'Carts & Orders';
 
     public static function getNavigationSort(): ?int
