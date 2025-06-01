@@ -1,0 +1,94 @@
+body.login-page {
+    background-image: url("/icon/bg_login.jpg"); /* Ensure this path is correct relative to your public directory */
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column; /* To allow header and footer to stack with content */
+}
+
+/* This targets the direct div child of body.login-page, which wraps header, slot, and footer */
+body.login-page > div {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Ensure this wrapper also takes full height */
+}
+
+.login-page .navbar-custom {
+    position: sticky; /* Changed from fixed to sticky to flow with content if needed, or could be relative */
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+    flex-shrink: 0; /* Header should not shrink */
+}
+
+/* This is the div we added in login.blade.php */
+.login-page .login-page-main-content {
+    flex-grow: 1; /* Allows this area to take up available space, pushing footer down */
+    display: flex;
+    align-items: center; /* Vertically center login-box */
+    justify-content: center; /* Horizontally center login-box */
+    width: 100%;
+    padding: 20px; /* Add some padding */
+}
+
+.login-page .login-box {
+    background-color: rgba(255, 255, 255, 0.85); /* Semi-transparent white background */
+    border-radius: 15px;
+    padding: 35px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.15);
+    max-width: 480px; /* Max width for the login box */
+    width: 100%; /* login-box will take full width of its parent column, but max-width restricts it */
+}
+
+.login-page .login-logo img {
+    width: 150px;
+    height: auto;
+    border-radius: 50%;
+    margin-bottom: 10px; /* Space below logo */
+}
+
+.login-page .login-title {
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.login-page .form-label {
+    font-weight: bold;
+}
+
+.login-page .btn-login {
+    background-color: #28a745; /* Green color from your initial image */
+    border-color: #28a745;
+    font-weight: bold;
+    padding: 10px;
+}
+
+.login-page .btn-login:hover {
+    background-color: #218838;
+    border-color: #1e7e34;
+}
+
+.login-page .btn-google-login {
+    border: 1px solid #ced4da;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 10px;
+}
+
+.login-page .btn-google-login img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+}
+
+/* Ensure footer is not affected by login page specific flex styling */
+.login-page .footer-custom {
+    flex-shrink: 0; /* Footer should not shrink */
+    width: 100%; /* Ensure footer takes full width */
+    /* Add other specific footer styles if needed to override general ones */
+} 
