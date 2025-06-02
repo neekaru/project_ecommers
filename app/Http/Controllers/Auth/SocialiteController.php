@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Laravel\Socialite\Facades\Socialite;
+use Illuminate\Support\Facades\Auth;
+use App\Models\Customer;
 
 class SocialiteController extends Controller
 {   
@@ -21,7 +24,7 @@ class SocialiteController extends Controller
         }
 
         // Check if the user already exists in the database
-        $customer = \App\Models\Customer::where('provider_id', $socialUser->getId())
+        $customer = Customer::where('provider_id', $socialUser->getId())
             ->where('provider_name', $provider)
             ->first();
 
@@ -51,6 +54,6 @@ class SocialiteController extends Controller
 
         Auth::guard('customer')->login($customer);
 
-        return redirect()->route('/');
+        return redirect('/');
     }
 }
