@@ -27,7 +27,7 @@
           </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#" aria-label="Akun Pengguna">
+          <a class="nav-link" href="/login" aria-label="Akun Pengguna">
             <i class="fas fa-user"></i>
           </a>
         </li>
