@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Support\Str;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Product extends Model
 {
@@ -32,6 +33,22 @@ class Product extends Model
     public function ratings()
     {
         return $this->hasMany(Rating::class);
+    }
+
+    /**
+     * Get the product variants
+     */
+    public function variants(): HasMany
+    {
+        return $this->hasMany(ProductDetail::class, 'product_id');
+    }
+
+    /**
+     * Get the product add-ons
+     */
+    public function addons(): HasMany
+    {
+        return $this->hasMany(ProductAddon::class, 'product_id');
     }
 
         protected static function boot()

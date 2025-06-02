@@ -21,7 +21,8 @@
                 <h6 class="card-title mb-1">{{ $item->nama_produk }}</h6>
                 <p class="card-text text-secondary mb-1">Kategori: {{ $item->category ? $item->category->name : '-' }}</p>
                 <p class="card-text text-danger fw-bold">Rp. {{ number_format($item->harga_dasar, 0, ',', '.') }}</p>
-                <a href="#" class="btn btn-outline-dark btn-sm float-end">➕</a>
+              
+                <a href ="/product/{{ $item->id }}" class="btn btn-outline-dark btn-circle float-end">➕</a>
               </div>
             </div>
           </div>
@@ -54,7 +55,7 @@
                 <h6 class="card-title mb-1">{{ $item->nama_produk }}</h6>
                 <p class="card-text text-secondary mb-1">Kategori: {{ $item->category ? $item->category->name : '-' }}</p>
                 <p class="card-text text-danger fw-bold">Rp. {{ number_format($item->harga_dasar, 0, ',', '.') }}</p>
-                <a href="#" class="btn btn-outline-dark btn-sm float-end">➕</a>
+                <button class ="btn btn-outline-dark btn-circle float-end">➕</button>
               </div>
             </div>
           </div>
@@ -87,7 +88,7 @@
                 <h6 class="card-title mb-1">{{ $item->nama_produk }}</h6>
                 <p class="card-text text-secondary mb-1">Kategori: {{ $item->category ? $item->category->name : '-' }}</p>
                 <p class="card-text text-danger fw-bold">Rp. {{ number_format($item->harga_dasar, 0, ',', '.') }}</p>
-                <a href="#" class="btn btn-outline-dark btn-sm float-end">➕</a>
+                <button class ="btn btn-outline-dark btn-circle float-end">➕</button>
               </div>
             </div>
           </div>
@@ -120,7 +121,7 @@
                 <h6 class="card-title mb-1">{{ $item->nama_produk }}</h6>
                 <p class="card-text text-secondary mb-1">Kategori: {{ $item->category ? $item->category->name : '-' }}</p>
                 <p class="card-text text-danger fw-bold">Rp. {{ number_format($item->harga_dasar, 0, ',', '.') }}</p>
-                <a href="#" class="btn btn-outline-dark btn-sm float-end">➕</a>
+                <button class ="btn btn-outline-dark btn-circle float-end">➕</button>
               </div>
             </div>
           </div>
@@ -153,7 +154,7 @@
                 <h6 class="card-title mb-1">{{ $item->nama_produk }}</h6>
                 <p class="card-text text-secondary mb-1">Kategori: {{ $item->category ? $item->category->name : '-' }}</p>
                 <p class="card-text text-danger fw-bold">Rp. {{ number_format($item->harga_dasar, 0, ',', '.') }}</p>
-                <a href="#" class="btn btn-outline-dark btn-sm float-end">➕</a>
+                <button class ="btn btn-outline-dark btn-circle float-end">➕</button>
               </div>
             </div>
           </div>

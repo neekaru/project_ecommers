@@ -51,8 +51,12 @@
             margin-bottom: 15px;
         }
 
+        .bg-danger {
+            background-color: #B11C22 !important; /* Warna merah untuk latar belakang */
+        }
+
         .promo-section .promo-title .highlight {
-            color: #dc3545; /* Warna merah untuk teks yang di-highlight */
+            color: #B11C22; /* Warna merah untuk teks yang di-highlight */
         }
 
         .promo-section .promo-description {
@@ -139,7 +143,16 @@
             padding-right: 20px;
         }
 
-
+        .btn-circle {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        font-weight: bold;
+        font-size: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        }
             </style>
     </head>
     <body class="{{ (isset($title) && $title === 'Login') ? 'login-page' : '' }}">

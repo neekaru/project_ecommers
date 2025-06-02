@@ -1,0 +1,53 @@
+        /* Custom styles for Product Card */
+
+        .product-card {
+            transition: all 0.3s ease-in-out;
+        }
+
+        .product-card:hover {
+            box-shadow: 0 12px 24px rgba(0, 0, 0, 0.08);
+            transform: translateY(-4px);
+        }
+
+        .product-image {
+            border-radius: 0.5rem;
+            transition: transform 0.3s ease;
+        }
+
+        .product-image:hover {
+            transform: scale(1.05);
+        }
+
+        .variant-option:hover,
+        .addon-option:hover {
+            background-color: #f0fdf4; /* soft green background */
+            border-color: #bbf7d0; /* light green border */
+        }
+
+        .variant-option input:checked + label,
+        .addon-option input:checked + label {
+            font-weight: 600;
+            color: #16a34a; /* green-600 */
+        }
+
+        .quantity-button:hover {
+            background-color: #ecfdf5;
+            color: #059669; /* green-500 */
+        }
+
+        .review-avatar {
+            background-color: #1f2937; /* gray-800 */
+            color: #fff;
+            font-weight: bold;
+        }
+
+        .review-comment {
+            background-color: #f9fafb;
+            padding: 0.75rem;
+            border-radius: 0.5rem;
+            margin-top: 0.25rem;
+        }
+
+        .review-stars svg {
+            transition: color 0.2s ease;
+        }
