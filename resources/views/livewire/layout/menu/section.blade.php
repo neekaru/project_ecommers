@@ -1,21 +1,35 @@
 <!-- Section Menu -->
   <div class="container py-5">
     <!-- Ayam -->
-    <section id="ayam">
+    <section id="ayam" class="mt-5">
       <h4 class="fw-bold">Menu Ayam</h4>
       <div class="row">
-        <!-- Card Menu Item -->
-        <!-- Ulangi ini sesuai jumlah menu -->
-        <div class="col-md-3 mb-4">
-          <div class="card shadow-sm">
-            <img src="ayam-goreng.jpg" class="card-img-top" alt="Ayam Goreng">
-            <div class="card-body">
-              <h6 class="card-title mb-1">Ayam Goreng</h6>
-              <p class="card-text text-danger fw-bold">Rp. 23.000</p>
-              <a href="#" class="btn btn-outline-dark btn-sm float-end">🛒</a>
+        @php
+          $ayam = $products->filter(function($item) {
+            return optional($item->category)->name === 'Ayam';
+          });
+        @endphp
+        @forelse ($ayam as $item)
+          <div class="col-md-3 mb-4">
+            <div class="card shadow-sm">
+              @if($item->gambar_produk)
+                <img src="{{ asset('storage/' . $item->gambar_produk) }}" class="card-img-top" alt="{{ $item->nama_produk }}" style="height: 200px; object-fit: cover;">
+              @else
+                <img src="https://via.placeholder.com/300x200.png?text=No+Image" class="card-img-top" alt="No image available" style="height: 200px; object-fit: cover;">
+              @endif
+              <div class="card-body">
+                <h6 class="card-title mb-1">{{ $item->nama_produk }}</h6>
+                <p class="card-text text-secondary mb-1">Kategori: {{ $item->category ? $item->category->name : '-' }}</p>
+                <p class="card-text text-danger fw-bold">Rp. {{ number_format($item->harga_dasar, 0, ',', '.') }}</p>
+                <a href="#" class="btn btn-outline-dark btn-sm float-end">➕</a>
+              </div>
             </div>
           </div>
-        </div>
+        @empty
+          <div class="col-12">
+            <p class="text-center">Saat ini belum ada menu ayam.</p>
+          </div>
+        @endforelse
       </div>
     </section>
 
