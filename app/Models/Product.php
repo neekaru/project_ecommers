@@ -42,6 +42,10 @@ class Product extends Model
     {
         return $this->hasMany(ProductDetail::class, 'product_id');
     }
+    public function varianProducts()
+    {
+        return $this->hasMany(VarianProduct::class);
+    }
 
     /**
      * Get the product add-ons
