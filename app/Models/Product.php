@@ -35,6 +35,11 @@ class Product extends Model
         return $this->hasMany(Rating::class);
     }
 
+    public function details()
+    {
+        return $this->hasMany(ProductDetail::class);
+    }
+
     /**
      * Get the product variants
      */
