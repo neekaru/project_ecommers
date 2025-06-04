@@ -143,10 +143,6 @@
             padding-right: 20px;
         }
 
-<<<<<<< HEAD
-        
-        </style>
-=======
         .btn-circle {
         width: 36px;
         height: 36px;
@@ -158,7 +154,6 @@
         align-items: center;
         }
             </style>
->>>>>>> e6664c829dccf00500825727bb53b7f13b7cb349
     </head>
     <body class="{{ (isset($title) && $title === 'Login') ? 'login-page' : '' }}">
         <div>
