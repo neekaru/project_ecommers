@@ -10,7 +10,7 @@
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
         @vite(['resources/css/app.css', 'resources/js/app.js'])
         <title>{{ $title ?? 'Page Title' }}</title>
-          <style>
+        <style>
          /* Anda bisa menyesuaikan warna merah ini agar lebih mirip dengan gambar */
         .navbar-custom {
             background-color: #B11C22; /* Warna merah dari screenshot (perkiraan) */
@@ -139,8 +139,8 @@
             padding-right: 20px;
         }
 
-
-            </style>
+        
+        </style>
     </head>
     <body class="{{ (isset($title) && $title === 'Login') ? 'login-page' : '' }}">
         <div>
