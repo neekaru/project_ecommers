@@ -107,8 +107,10 @@ class ProductDetails extends Component
             'add_ons' => $this->selectedAddOns,
             'total_price' => $this->totalPrice
         ];
-        $this->dispatch('item-added-to-cart', $cartItem);
+
         session()->flash('message', 'Item berhasil ditambahkan ke keranjang!');
+
+        return redirect('/cart'); // langsung redirect
     }
 
     public function render() 

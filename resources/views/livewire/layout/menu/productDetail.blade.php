@@ -92,9 +92,8 @@
 
         {{-- Tombol Keranjang --}}
         <div class="mb-4">
-            <button wire:click="addToCart" class="btn btn-success w-100 fw-semibold text-uppercase py-2">
-                MASUK KERANJANG
-            </button>
+            <a href ="/cart" wire:click="addToCart" class="btn btn-success w-100 fw-semibold text-uppercase py-2">
+                MASUK KERANJANG </a>
         </div>
 
         {{-- Ulasan --}}

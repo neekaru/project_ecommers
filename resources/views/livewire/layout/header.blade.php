@@ -1,7 +1,7 @@
 <nav class="navbar navbar-expand-lg navbar-custom navbar-dark">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">
-      <img src="{{ asset('icon/logo baru.png') }}" alt="Logo Toko" class="d-inline-block align-text-top rounded-circle">
+    <a class="navbar-brand" href="/">
+      <img src="{{ asset('icon/logo baru.png') }}" alt="Logo Toko" class="btn d-inline-block align-text-top rounded-circle">
     </a>
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavContent" aria-controls="navbarNavContent" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,7 +18,7 @@
           <a class="nav-link" href="/menu">Menu</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">Contact</a>
+          <a class="btn nav-link" href="https://wa.me/62859106982313">Contact</a>
         </li>
         <!-- Ikon keranjang dan akun -->
         <li class="nav-item">
