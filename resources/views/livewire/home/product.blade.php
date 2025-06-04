@@ -7,7 +7,7 @@
                 <p class="promo-description">
                     Nikmati bebek renyah + nasi + sambal galak cuma di satu paket hemat! 🔥
                 </p>
-                <a href="#" class="btn btn-promo">Lihat paket spesial</a>
+                <a href="/menu#paket" class="btn btn-promo">Lihat paket spesial</a>
             </div>
             <div class="col-md-6 promo-image">
                 <img src="{{ asset('icon/paket spesial.png') }}" alt="Paket Spesial Bebek Galak">
@@ -21,7 +21,7 @@
                 <p class="promo-description">
                     Nasi Tumpeng ini sangat cocok untuk berbagai perayaan, acara Syukuran, Arisan, Peresmian, dan juga dapat dijadikan sebagai hadiah ulang tahun.
                 </p>
-                <a href="#" class="btn btn-promo">Lihat pilihan tumpeng</a>
+                <a href="/menu#tumpeng" class="btn btn-promo">Lihat pilihan tumpeng</a>
             </div>
             <div class="col-md-6 order-md-1 promo-image"> <img src="{{ asset('icon/nasi kuning tumpeng.png') }}" alt="Tumpeng Spesial">
             </div>
@@ -44,7 +44,7 @@
                                 <h5 class="card-title">{{ $item->nama_produk }}</h5>
                                 <p class="card-text flex-grow-1">{{ \Illuminate\Support\Str::limit($item->deskripsi, 100) }}</p>
                                 <p class="card-text fw-bold text-success">Rp. {{ number_format($item->harga_dasar, 0, ',', '.') }}</p>
-                                <a href="/products/{{ $item->slug }}" wire:navigate class="btn btn-danger mt-auto">Lihat Produk</a>
+                                <a href="/menu#products/{{ $item->slug }}" wire:navigate class="btn btn-danger mt-auto">Lihat Produk</a>
                             </div>
                         </div>
                     </div>
