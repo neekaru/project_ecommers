@@ -22,7 +22,7 @@
         </li>
         <!-- Ikon keranjang dan akun -->
         <li class="nav-item">
-          <a class="nav-link" href="#" aria-label="Keranjang Belanja">
+          <a class="nav-link" href="/cart" aria-label="Keranjang Belanja" wire:navigate>
             <i class="fas fa-shopping-cart"></i>
           </a>
         </li>
