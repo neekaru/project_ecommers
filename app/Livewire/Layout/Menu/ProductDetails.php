@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\Product;
 use App\Models\ProductAddon;
 use App\Models\Rating;
+use App\Models\VarianProduct;
 
 class ProductDetails extends Component
 {
