@@ -108,7 +108,7 @@ class ProductDetails extends Component
     {
         if (!auth()->guard('customers')->check()) {
             session()->flash('error', 'Anda harus login terlebih dahulu untuk menambahkan item ke keranjang.');
-            return redirect('/login', navigate: true); // redirect ke halaman login
+            return redirect('/login'); // redirect ke halaman login
         }
 
         $customerId = auth()->guard('customers')->user()->id;
@@ -130,7 +130,7 @@ class ProductDetails extends Component
         }
 
         session()->flash('message', 'Item berhasil ditambahkan ke keranjang!');
-        return redirect('/cart', navigate: true); // langsung redirect
+        return redirect('/cart'); // langsung redirect
     }
 
     public function render() 

@@ -5,7 +5,7 @@
         @foreach($items as $item)
             <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
                 <div class="d-flex gap-3 align-items-start">
-                    <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}" class="rounded" style="width: 48px; height: 48px; object-fit: cover;">
+                    <img src="{{ $item['image'] }}" alt="{{ $item['nama_produk'] }}" class="rounded" style="width: 48px; height: 48px; object-fit: cover;">
                     <div>
                         <div class="fw-semibold">{{ $item['name'] }}</div>
                         <div class="text-muted small">{{ $item['desc'] }}</div>

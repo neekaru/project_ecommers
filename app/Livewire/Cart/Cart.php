@@ -9,21 +9,7 @@ class Cart extends Component
 {
     public $subtotal= 0;
     public $items = [
-        [
-            'name' => 'Ayam Goreng',
-            'desc' => 'ayam goreng Paha komplit',
-            'price' => 23000,
-            'qty' => 1,
-            'image' => 'https://via.placeholder.com/50',
-        ],
-        [
-            'name' => 'Nasi Putih',
-            'desc' => '',
-            'price' => 5000,
-            'qty' => 1,
-            'image' => 'https://via.placeholder.com/50',
-        ],
-        // Tambahkan produk lainnya
+       
     ];
 
     public function getCartItems()
@@ -44,18 +30,35 @@ class Cart extends Component
 
     public function mount()
     {
-        // Ambil data cart dari database menggunakan getCartItems
-        $this->items = $this->getCartItems()->map(function($cart) {
+
+        // 1. ambil data cart (relasi tbl produk) dari database
+        // 2. masukan ke var $this->items
+
+        $cartItems = CartModel::with('product')->where('user_id', auth()->id())->get();
+        $this->items = $cartItems->map(function($cart) {
             return [
-                'name' => $cart->product->name ?? '-',
-                'desc' => $cart->product->desc ?? '',
-                'price' => $cart->product->price ?? 0,
-                'qty' => $cart->qty ?? 1,
-                'image' => $cart->product->image_url ?? 'https://via.placeholder.com/50',
+                'nama_produk' => $cart->product->nama_produk ?? '-',
+                'name' => $cart->product->nama_produk ?? '-',
+                'desc' => $cart->product->deskripsi ?? '',
+                'price' => $cart->product->harga_dasar ?? 0,
+                'qty' => $cart->quantity ?? 1,
+                'image' => $cart->product->gambar_produk ?? 'https://via.placeholder.com/50',
             ];
         })->toArray();
-        // Hitung subtotal setelah items diisi
         $this->subtotal = collect($this->items)->sum(fn($item) => $item['price'] * $item['qty']);
+        
+        // // Ambil data cart dari database menggunakan getCartItems
+        // $this->items = $this->getCartItems()->map(function($cart) {
+        //     return [
+        //         'name' => $cart->product->name ?? '-',
+        //         'desc' => $cart->product->desc ?? '',
+        //         'price' => $cart->product->price ?? 0,
+        //         'qty' => $cart->qty ?? 1,
+        //         'image' => $cart->product->image_url ?? 'https://via.placeholder.com/50',
+        //     ];
+        // })->toArray();
+        // // Hitung subtotal setelah items diisi
+        // $this->subtotal = collect($this->items)->sum(fn($item) => $item['price'] * $item['qty']);
     }
 
     public function render()
