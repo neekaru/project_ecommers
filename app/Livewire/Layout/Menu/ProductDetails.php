@@ -7,6 +7,9 @@ use App\Models\Product;
 use App\Models\ProductAddon;
 use App\Models\Rating;
 use App\Models\VarianProduct;
+use App\Models\Cart;
+use App\Models\CartAddon;
+use Illuminate\Support\Facades\Auth;
 
 class ProductDetails extends Component
 {
@@ -100,17 +103,30 @@ class ProductDetails extends Component
 
     public function addToCart()
     {
-        $cartItem = [
-            'product' => $this->product,
-            'variant' => $this->variant,
+        $cart = Cart::create([
+            'user_id' => Auth::id(),
+            'product_id' => $this->product->id,
             'quantity' => $this->quantity,
-            'add_ons' => $this->selectedAddOns,
-            'total_price' => $this->totalPrice
-        ];
+            'price' => $this->totalPrice,
+        ]);
+
+        foreach ($this->selectedAddOns as $key) {
+            if (isset($this->addOns[$key])) {
+                $addon = $this->addOns[$key];
+
+                CartAddon::create([
+                    'cart_id' => $cart->id,
+                    'product_addon_id' => ProductAddon::where('name', $addon['name'])->value('id'),
+                    'name' => $addon['name'],
+                    'price' => $addon['price'],
+                    'quantity' => 1,
+                ]);
+            }
+        }
 
         session()->flash('message', 'Item berhasil ditambahkan ke keranjang!');
 
-        return redirect('/cart'); // langsung redirect
+        return redirect('/cart');
     }
 
     public function render() 
