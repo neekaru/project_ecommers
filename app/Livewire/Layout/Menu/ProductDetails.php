@@ -7,6 +7,9 @@ use App\Models\Product;
 use App\Models\ProductAddon;
 use App\Models\Rating;
 use App\Models\VarianProduct;
+use App\Models\Cart;
+use App\Models\CartAddon;
+use Illuminate\Support\Facades\Auth;
 
 class ProductDetails extends Component
 {
