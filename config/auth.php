@@ -42,7 +42,7 @@ return [
     ],
 
     //customer
-    'customer'  => [
+    'customers'  => [
         'driver'    => 'session',
         'provider'  => 'customers'
     ]

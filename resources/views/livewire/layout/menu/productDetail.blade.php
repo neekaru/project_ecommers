@@ -1,7 +1,3 @@
-{{-- Bootstrap dan CSS Kustom --}}
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
-<link rel="stylesheet" href="{{ asset('css/product-detail.css') }}">
-
 <div class="card product-card">
     {{-- Flash Message --}}
     @if (session()->has('message'))
@@ -41,10 +37,10 @@
                     <div class="text-secondary small">per porsi</div>
                 </div>
                 {{-- Selector Jumlah --}}
-                <div class="quantity-selector">
-                    <button wire:click="decrementQuantity" class="btn-qty">−</button>
-                    <span class="qty">{{ $quantity }}</span>
-                    <button wire:click="incrementQuantity" class="btn-qty">+</button>
+                <div class="quantity-selector d-flex align-items-center" wire:key="qty-selector">
+                    <button type="button" wire:click="decrementQuantity" class="btn btn-outline-secondary px-3">−</button>
+                    <span class="mx-3 fw-semibold">{{ $quantity }}</span>
+                    <button type="button" wire:click="incrementQuantity" class="btn btn-outline-secondary px-3">+</button>
                 </div>
             </div>
         </div>
@@ -92,8 +88,9 @@
 
         {{-- Tombol Keranjang --}}
         <div class="mb-4">
-            <a href ="/cart" wire:click="addToCart" class="btn btn-success w-100 fw-semibold text-uppercase py-2">
-                MASUK KERANJANG </a>
+            <button type="button" wire:click="addToCart" class="btn btn-success w-100 fw-semibold text-uppercase py-2">
+                MASUK KERANJANG
+            </button>
         </div>
 
         {{-- Ulasan --}}

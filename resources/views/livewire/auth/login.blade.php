@@ -10,6 +10,13 @@
                 <input type="email" id="email" class="form-control" wire:model.defer="email" placeholder="Masukan Email Anda">
                 @error('email') <span class="text-danger d-block mt-1">{{ $message }}</span> @enderror
             </div>
+
+              <div class="mb-3">
+                <label for="password" class="form-label">PASSWORD <span class="text-danger">*</span></label>
+                <input type="password" id="password" class="form-control" wire:model.defer="password" placeholder="Masukan password Anda">
+                @error('password') <span class="text-danger d-block mt-1">{{ $message }}</span> @enderror
+            </div>
+
             <button type="submit" class="btn btn-login w-100">LOGIN</button>
         </form>
         <div class="mt-3 text-center">

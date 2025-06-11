@@ -20,6 +20,7 @@ class Customer extends Authenticatable
         'provider_id',
         'provider_name',
         'avatar',
+        'password',
     ];
 
     public function checkouts(): HasMany

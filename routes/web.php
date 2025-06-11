@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\SocialiteController;
 use App\Livewire\Cart\Cart;
 use App\Livewire\Layout\Menu\ProductDetails;
+use App\Livewire\User\Dashboard;
 
 Route::get('/', function () {
     return view('layouts.main');
@@ -20,3 +21,8 @@ Route::get('/menu', Makanan::class);
 Route::get('/login', Login::class)->name('login');
 Route::get('/cart', Cart::class);
 Route::get('/product/{id}', ProductDetails::class);
+
+
+Route::middleware(['auth:customers'])->group(function () {
+    Route::get('/user', Dashboard::class)->name('user.dashboard');
+});

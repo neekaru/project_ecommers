@@ -11,9 +11,11 @@ use Livewire\Attributes\Layout;
 class Login extends Component
 {
     public string $email = '';
+    public string $password = '';
 
     protected $rules = [
         'email' => 'required|email',
+        'password' => 'required',
     ];
 
     public function login()
@@ -22,17 +24,24 @@ class Login extends Component
 
         $customer = Customer::where('email', $this->email)->first();
 
+     
         if (!$customer) {
-            // Create a new customer if not found
+            // Create a new customer if not found, hash the password with bcrypt
             $customer = Customer::create([
                 'email' => $this->email,
                 'nama' => 'Guest',
-                'password' => bcrypt(str()->random(12)), // random password, not used for login
+                'password' => bcrypt($this->password), // bcrypt hash for password
             ]);
         }
 
-        Auth::guard('customer')->login($customer);
-        return redirect('/');
+        if (auth()->guard('customers')->attempt(['email' => $this->email, 'password' => $this->password])) {
+            // return 'oke berhasil login';
+            return $this->redirect('/user');
+        } else {
+            // return 'gagal login';
+            return $this->redirect('/login');
+        }
+     
     }
 
     public function redirectToGoogle()

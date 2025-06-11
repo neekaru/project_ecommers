@@ -11,6 +11,9 @@ use App\Models\VarianProduct;
 class ProductDetails extends Component
 {
     public $quantity = 1;
+    protected $updatesQueryString = ['quantity'];
+    protected $listeners = ['refresh' => '$refresh'];
+
     public $variant;
     public $selectedAddOns = [];
     public $product;
@@ -56,14 +59,14 @@ class ProductDetails extends Component
 
     public function incrementQuantity()
     {
-        $this->quantity++;
+        $this->quantity = (int) $this->quantity + 1;
+        $this->dispatch('refresh');
     }
 
     public function decrementQuantity()
     {
-        if ($this->quantity > 1) {
-            $this->quantity--;
-        }
+        $this->quantity = max(1, (int) $this->quantity - 1);
+        $this->dispatch('refresh');
     }
 
     public function toggleAddOn($addOnKey)
@@ -100,17 +103,31 @@ class ProductDetails extends Component
 
     public function addToCart()
     {
-        $cartItem = [
-            'product' => $this->product,
-            'variant' => $this->variant,
-            'quantity' => $this->quantity,
-            'add_ons' => $this->selectedAddOns,
-            'total_price' => $this->totalPrice
-        ];
+        if (!auth()->guard('customers')->check()) {
+            session()->flash('error', 'Anda harus login terlebih dahulu untuk menambahkan item ke keranjang.');
+            return redirect('/login', navigate: true); // redirect ke halaman login
+        }
+
+        $customerId = auth()->guard('customers')->user()->id;
+
+        $cartItem = \App\Models\Cart::where('product_id', $this->productId)
+            ->where('user_id', $customerId)
+            ->first();
+        
+        if ($cartItem) {
+            $cartItem->increment('quantity', $this->quantity);
+        } else {
+            \App\Models\Cart::create([
+                'user_id' => $customerId,
+                'product_id' => $this->productId ?? null,
+                'variant' => $this->variant ?? null,
+                'quantity' => $this->quantity ?? 1,
+                'price' => $this->totalPrice,
+            ]);
+        }
 
         session()->flash('message', 'Item berhasil ditambahkan ke keranjang!');
-
-        return redirect('/cart'); // langsung redirect
+        return redirect('/cart', navigate: true); // langsung redirect
     }
 
     public function render() 
@@ -123,6 +140,8 @@ class ProductDetails extends Component
             'variantPrice' => $this->variantPrice,
             'addOnsTotal' => $this->addOnsTotal,
             'totalPrice' => $this->totalPrice
+        ])->layout('components.layouts.app', [
+            'title' => $this->product->name ?? 'Product Details'
         ]);
     }
 }
