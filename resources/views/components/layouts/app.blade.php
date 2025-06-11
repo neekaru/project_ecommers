@@ -170,7 +170,9 @@
 
         {{ $slot }}
 
-        @livewire('layout.footer')
+        <div wire:ignore>
+            @livewire('layout.footer')
+        </div>
     </div>
 
     {{-- Bootstrap Bundle --}}
