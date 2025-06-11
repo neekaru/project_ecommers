@@ -35,7 +35,7 @@ public static function form(Form $form): Form
                         ->label('Customer')
                         ->relationship('user', 'name')  // asumsikan model User punya kolom name
                         ->searchable()
-                        ->required(),
+                        ->nullable(),
 
                     // Product (relasi ke products)
                     Forms\Components\Select::make('product_id')
