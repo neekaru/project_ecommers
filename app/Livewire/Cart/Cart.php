@@ -34,7 +34,10 @@ class Cart extends Component
         // 1. ambil data cart (relasi tbl produk) dari database
         // 2. masukan ke var $this->items
 
-        $cartItems = CartModel::with('product')->where('user_id', auth()->id())->get();
+        // dd(auth()->id());
+        // dd(auth()->guard('customers')->check(), auth()->guard('customers')->user());
+
+        $cartItems = CartModel::with('product')->where('user_id', auth()->guard('customers')->id())->get();
         $this->items = $cartItems->map(function($cart) {
             return [
                 'nama_produk' => $cart->product->nama_produk ?? '-',
