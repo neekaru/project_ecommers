@@ -34,13 +34,14 @@ class ProductDetails extends Component
         $this->variants = $this->product->varianProducts->mapWithKeys(function($variant) {
             return [$variant->id => [
                 'name' => $variant->nama_varian,
+                'price' => $variant->price,
             ]];
         })->toArray();
         $this->variant = array_key_first($this->variants);
 
         // Add-ons
         $this->addOns = $this->product->addons->mapWithKeys(function($addon) {
-            return [$addon->slug => [
+            return [$addon->id => [
                 'name' => $addon->name,
                 'price' => $addon->price
             ]];
@@ -83,6 +84,10 @@ class ProductDetails extends Component
 
     public function getVariantPriceProperty()
     {
+        if ($this->variant && isset($this->variants[$this->variant]['price'])) {
+            return $this->variants[$this->variant]['price'];
+        }
+
         return $this->product->harga_dasar ?? 0;
     }
 

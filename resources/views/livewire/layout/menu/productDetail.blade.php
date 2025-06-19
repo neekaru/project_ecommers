@@ -16,7 +16,7 @@
         <div class="col-auto">
             <div style="width: 240px; height: 240px;" class="overflow-hidden rounded">
                 <img src="{{ asset('storage/' . $product['gambar_produk']) }}"
-                    alt="{{ $product['name'] }}"
+                    alt="{{ $product['nama_produk'] }}"
                     class="img-fluid h-100 object-fit-cover w-100 rounded">
             </div>
         </div>

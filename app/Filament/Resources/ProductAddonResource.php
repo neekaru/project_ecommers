@@ -57,7 +57,6 @@ public static function form(Form $form): Form
                     Forms\Components\Textarea::make('description')
                         ->label('Deskripsi')
                         ->rows(4)
-                        ->required(),
                 ])
         ]);
 }
