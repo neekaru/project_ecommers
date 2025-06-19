@@ -20,7 +20,7 @@ Route::get('/', function () {
 // Handle route for social login
 Route::get('auth/{provider}', [SocialiteController::class, 'redirectToProvider'])->name('auth.google');
 Route::get('auth/{provider}/callback', [SocialiteController::class, 'handleProviderCallback'])->name('social.callback');
-Route::get('/menu', Makanan::class);
+Route::get('/menu', Makanan::class)->name('menu');
 Route::get('/login', Login::class)->name('login');
 Route::get('/cart', Cart::class);
 Route::get('/product/{id}', ProductDetails::class);

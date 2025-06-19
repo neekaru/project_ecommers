@@ -13,7 +13,7 @@ class Checkout extends Component
     public $nama;
     public $telepon;
     public $alamat;
-    public $metodePemesanan = 'Dine-in';
+    public $metodePemesanan = 'dine_in';
     public $metodePembayaran = 'Qris';
     public $jadwalAktif = false;
     public $tanggal;
@@ -37,23 +37,20 @@ class Checkout extends Component
 
     public function submit()
     {
-        $this->validate([
+        $rules = [
             'nama' => 'required|string|max:255',
             'telepon' => 'required|string|max:20',
             'alamat' => 'required|string',
-            'metodePemesanan' => 'required|in:Dine-in,Take Away,Driver Thru,Catering',
+            'metodePemesanan' => 'required|in:dine_in,take_away,drive_thru,catering',
             'metodePembayaran' => 'required|in:Qris,Cod/cash',
-        ]);
+        ];
 
+        if ($this->jadwalAktif) {
+            $rules['tanggal'] = 'required|date';
+            $rules['waktu'] = 'required';
+        }
 
-         if ($this->jadwalAktif) {
-        $rules['tanggal'] = 'required|date';
-        $rules['waktu'] = 'required';
-    }
-
-    $this->validate($rules);
-
-    // Lanjut simpan order...
+        $this->validate($rules);
 
         // Simulasi proses simpan pesanan
         session()->flash('success', 'Pesanan Anda berhasil dikirim!');

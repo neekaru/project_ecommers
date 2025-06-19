@@ -38,10 +38,10 @@
 
                 <h5 class="fw-bold mb-2">PILIH METODE PEMESANAN</h5>
                 <div class="mb-3">
-                    @foreach(['Dine-in', 'Take Away', 'Driver Thru', 'Catering'] as $method)
+                    @foreach(['dine_in' => 'Dine In', 'take_away' => 'Take Away', 'drive_thru' => 'Drive Thru', 'catering' => 'Catering'] as $value => $label)
                         <div class="form-check form-check-inline">
-                            <input type="radio" wire:model="metodePemesanan" class="form-check-input" value="{{ $method }}" id="pesan_{{ $method }}">
-                            <label class="form-check-label" for="pesan_{{ $method }}">{{ $method }}</label>
+                            <input type="radio" wire:model="metodePemesanan" class="form-check-input" value="{{ $value }}" id="pesan_{{ $value }}">
+                            <label class="form-check-label" for="pesan_{{ $value }}">{{ $label }}</label>
                         </div>
                     @endforeach
                 </div>
