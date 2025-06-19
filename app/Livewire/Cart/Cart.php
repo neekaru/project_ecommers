@@ -11,7 +11,33 @@ class Cart extends Component
     public $items = [
        
     ];
+    //  public $order;
 
+
+    // public function placeOrder()
+    // {
+    //     if (!$this->items) {
+    //         session()->flash('error', 'Tidak ada pesanan yang dapat diproses.');
+    //         return;
+    //     }
+
+
+    //     dd("oke");
+
+        // 1. memindahkan data dari items ke transaction dan transaction_detail
+        // 2. hapus data cart yang sudah dipindahkan
+        // 3. redirect ke halaman checkout
+
+
+        
+        // Simulasikan update status
+    //     $this->order->status = 'diproses';
+    //     $this->order->save();
+
+    //     session()->flash('success', 'Pesanan Anda sedang diproses.');
+    // }
+
+    
     public function getCartItems()
     {
         // Pakai data langsung dari model
@@ -40,6 +66,7 @@ class Cart extends Component
         $cartItems = CartModel::with('product')->where('user_id', auth()->guard('customers')->id())->get();
         $this->items = $cartItems->map(function($cart) {
             return [
+                'id_produk' => $cart->product->id ?? '-',
                 'nama_produk' => $cart->product->nama_produk ?? '-',
                 'name' => $cart->product->nama_produk ?? '-',
                 'desc' => $cart->product->deskripsi ?? '',

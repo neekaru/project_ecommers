@@ -8,6 +8,9 @@ use App\Http\Controllers\Auth\SocialiteController;
 use App\Livewire\Cart\Cart;
 use App\Livewire\Layout\Menu\ProductDetails;
 use App\Livewire\User\Dashboard;
+use App\Livewire\Checkout\Checkout; // pastikan kamu punya Livewire Checkout component
+
+
 
 Route::get('/', function () {
     return view('layouts.main');
@@ -23,6 +26,9 @@ Route::get('/cart', Cart::class);
 Route::get('/product/{id}', ProductDetails::class);
 
 
+
 Route::middleware(['auth:customers'])->group(function () {
     Route::get('/user', Dashboard::class)->name('user.dashboard');
 });
+
+Route::get('/checkout', Checkout::class)->name('checkout');

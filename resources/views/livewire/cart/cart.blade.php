@@ -24,9 +24,12 @@
         </div>
 
         <div class="mt-4 text-center">
-            <button class="btn btn-success px-4 py-2">
-                pesan sekarang
-            </button>
+         <a href="{{ route('checkout') }}" class="btn btn-success w-100 text-white text-decoration-none">
+        Checkout
+        </a>
+           {{-- <button type="button" wire:click="Checkout" class="btn btn-success w-100 fw-semibold text-uppercase py-2">
+                Checkout
+            </button> --}}
         </div>
     </div>
 </div>
