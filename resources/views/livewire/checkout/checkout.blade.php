@@ -58,18 +58,13 @@
                     </div>
                 </div>
 
-                <div class="form-check form-switch mb-3">
+                {{-- <div class="form-check form-switch mb-3">
                 <input type="checkbox" wire:model="jadwalAktif" class="form-check-input" id="jadwalSwitch">
                 <label class="form-check-label" for="jadwalSwitch">Jadwalin Pengambilan/Pengantaran</label>
-                </div>
+                </div> --}}
 
                 <button wire:click="submit" class="btn btn-success w-100">pesan sekarang</button>
                
-                @if (session()->has('success'))
-                    <div class="alert alert-success mt-3">
-                        {{ session('success') }}
-                    </div>
-                @endif
 
                 @if($jadwalAktif)
             

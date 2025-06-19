@@ -168,6 +168,14 @@
     <div>
         @livewire('layout.header')
 
+        @if (session()->has('success'))
+            <div class="container mt-3">
+                <div class="alert alert-success">
+                    {{ session('success') }}
+                </div>
+            </div>
+        @endif
+
         {{ $slot }}
 
         <div wire:ignore>

@@ -1,10 +1,4 @@
 <div class="card product-card">
-    {{-- Flash Message --}}
-    @if (session()->has('message'))
-        <div class="alert alert-success rounded-0 mb-0" role="alert">
-            <span>{{ session('message') }}</span>
-        </div>
-    @endif
 
     <div class="card shadow rounded-4 p-4 mx-auto my-5" style="max-width: 720px;">
         {{-- Tombol Kembali --}}
