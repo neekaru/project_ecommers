@@ -28,14 +28,12 @@ class ProductDetails extends Component
     public function mount($id)
     {
         $this->productId = $id;
-        $this->product = Product::with(['addons', 'ratings'])->findOrFail($id);
-        // $this->product = Product::with(['variants', 'CartartAddon', 'ratings'])->findOrFail($id);
+        $this->product = Product::with(['varianProducts', 'addons', 'ratings'])->findOrFail($id);
 
         // Variants
-        $this->variants = $this->product->variants->mapWithKeys(function($variant) {
-            return [$variant->slug => [
-                'name' => $variant->name,
-                'price' => $variant->price
+        $this->variants = $this->product->varianProducts->mapWithKeys(function($variant) {
+            return [$variant->id => [
+                'name' => $variant->nama_varian,
             ]];
         })->toArray();
         $this->variant = array_key_first($this->variants);
@@ -85,7 +83,7 @@ class ProductDetails extends Component
 
     public function getVariantPriceProperty()
     {
-        return $this->variants[$this->variant]['price'] ?? 0;
+        return $this->product->harga_dasar ?? 0;
     }
 
     public function getAddOnsTotalProperty()

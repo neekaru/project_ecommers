@@ -23,8 +23,8 @@
 
         {{-- Informasi Produk --}}
         <div class="mb-4">
-            <h2 class="h5 fw-bold text-dark mb-1">{{ $product['name'] }}</h2>
-            <p class="text-muted small mb-2">{{ $product['description'] }}</p>
+            <h2 class="h5 fw-bold text-dark mb-1">{{ $product['nama_produk'] }}</h2>
+            <p class="text-muted small mb-2">{{ $product['deskripsi'] }}</p>
             <div class="d-flex align-items-center justify-content-between">
                 <div>
                     <div class="fw-semibold text-dark">Rp. {{ number_format($this->variantPrice, 0, ',', '.') }}</div>

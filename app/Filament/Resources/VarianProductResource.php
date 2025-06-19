@@ -34,14 +34,14 @@ class VarianProductResource extends Resource
                     ->schema([
                         // Select Product
                         Components\Select::make('product_id')
-                            ->label('Product')
+                            ->label('Nama Makanan')
                             ->relationship('product', 'nama_produk') // ganti sesuai nama kolom produk kamu
                             ->searchable()
                             ->required(),
 
                         // Nama Varian
                         Components\TextInput::make('nama_varian')
-                            ->label('Varian Name')
+                            ->label('Nama Varian')
                             ->placeholder('Contoh: Dada, Paha, Panas, Dingin')
                             ->required(),
                     ])
