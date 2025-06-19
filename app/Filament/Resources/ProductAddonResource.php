@@ -33,22 +33,22 @@ public static function form(Form $form): Form
             Forms\Components\Card::make()
                 ->schema([
 
-                    // Relasi ke produk
+                    // Relasi ke Makanan
                     Forms\Components\Select::make('product_id')
-                        ->label('Produk')
+                        ->label('Nama makanan')
                         ->relationship('product', 'nama_produk') // Sesuaikan dengan nama relasi dan field
                         ->searchable()
                         ->required(),
 
                     // Nama addon
                     Forms\Components\TextInput::make('name')
-                        ->label('Nama Addon')
+                        ->label('Nama Tambahan')
                         ->required()
                         ->maxLength(255),
 
                     // Harga addon
                     Forms\Components\TextInput::make('price')
-                        ->label('Harga')
+                        ->label('Harga Addons')
                         ->numeric()
                         ->prefix('Rp')
                         ->required(),
@@ -57,7 +57,6 @@ public static function form(Form $form): Form
                     Forms\Components\Textarea::make('description')
                         ->label('Deskripsi')
                         ->rows(4)
-                        ->required(),
                 ])
         ]);
 }
@@ -69,12 +68,12 @@ public static function form(Form $form): Form
         ->columns([
             // Menampilkan nama produk dari relasi
             Tables\Columns\TextColumn::make('product.nama_produk')
-                ->label('Produk')
+                ->label('Nama Makanan')
                 ->searchable(),
 
             // Nama addon
             Tables\Columns\TextColumn::make('name')
-                ->label('Nama Addon')
+                ->label('Nama Tambahan')
                 ->searchable(),
 
             // Harga addon

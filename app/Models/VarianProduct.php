@@ -10,6 +10,7 @@ class VarianProduct extends Model
     protected $fillable = [
         'product_id',
         'nama_varian',
+        'price'
     ];
 
     public function product()

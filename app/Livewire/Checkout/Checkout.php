@@ -2,9 +2,15 @@
 
 namespace App\Livewire\Checkout;
 
+use App\Models\Customer;
+use App\Models\Transaction;
+use App\Models\TransactionDetail;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use App\Models\Cart as CartModel;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.app')]
 class Checkout extends Component
 {
     public $items = [];
@@ -13,7 +19,7 @@ class Checkout extends Component
     public $nama;
     public $telepon;
     public $alamat;
-    public $metodePemesanan = 'Dine-in';
+    public $metodePemesanan = 'dine_in';
     public $metodePembayaran = 'Qris';
     public $jadwalAktif = false;
     public $tanggal;
@@ -37,33 +43,59 @@ class Checkout extends Component
 
     public function submit()
     {
-        $this->validate([
+        $rules = [
             'nama' => 'required|string|max:255',
             'telepon' => 'required|string|max:20',
             'alamat' => 'required|string',
-            'metodePemesanan' => 'required|in:Dine-in,Take Away,Driver Thru,Catering',
+            'metodePemesanan' => 'required|in:dine_in,take_away,drive_thru,catering',
             'metodePembayaran' => 'required|in:Qris,Cod/cash',
+        ];
+
+        if ($this->jadwalAktif) {
+            $rules['tanggal'] = 'required|date';
+            $rules['waktu'] = 'required';
+        }
+
+        $this->validate($rules);
+
+        $customer = Customer::updateOrCreate(
+            ['telepon' => $this->telepon],
+            [
+                'nama' => $this->nama,
+                'alamat' => $this->alamat,
+                'email' => $this->telepon . '@mail.com',
+                'password' => bcrypt($this->telepon)
+            ]
+        );
+
+        $transaction = Transaction::create([
+            'customer_id' => $customer->id,
+            'total_harga' => $this->subtotal,
+            'metode_pembayaran' => $this->metodePembayaran,
+            'catatan' => $this->metodePemesanan,
         ]);
 
+        $cartItems = CartModel::with('product')->where('user_id', auth()->guard('customers')->id())->get();
 
-         if ($this->jadwalAktif) {
-        $rules['tanggal'] = 'required|date';
-        $rules['waktu'] = 'required';
-    }
+        foreach ($cartItems as $cart) {
+            TransactionDetail::create([
+                'transaction_id' => $transaction->id,
+                'product_id' => $cart->product_id,
+                'quantity' => $cart->quantity,
+                'price' => $cart->product->harga_dasar,
+                'subtotal' => $cart->product->harga_dasar * $cart->quantity,
+            ]);
+        }
 
-    $this->validate($rules);
+        CartModel::where('user_id', auth()->guard('customers')->id())->delete();
 
-    // Lanjut simpan order...
-
-        // Simulasi proses simpan pesanan
         session()->flash('success', 'Pesanan Anda berhasil dikirim!');
 
-        // Optional: redirect atau reset input
-        return redirect()->route('menu'); // atau rute konfirmasi
+        return redirect()->route('menu');
     }
 
     public function render()
     {
-        return view('livewire.checkout.checkout')->layout('components.layouts.app');
+        return view('livewire.checkout.checkout');
     }
 }

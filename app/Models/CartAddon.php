@@ -9,8 +9,6 @@ class CartAddon extends Model
     protected $fillable = [
         'cart_id',
         'product_addon_id',  // referensi ke addon produk
-        'name',              // nama addon (bisa disimpan langsung untuk history)
-        'price',             // harga addon
         'quantity',          // jumlah addon (misal, 2x topping keju)
     ];
 

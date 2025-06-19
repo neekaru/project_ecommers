@@ -34,15 +34,22 @@ class VarianProductResource extends Resource
                     ->schema([
                         // Select Product
                         Components\Select::make('product_id')
-                            ->label('Product')
-                            ->relationship('product', 'nama_produk') // ganti sesuai nama kolom produk kamu
+                            ->label('Nama Makanan')
+                            ->relationship('product', 'nama_produk')
                             ->searchable()
                             ->required(),
 
                         // Nama Varian
                         Components\TextInput::make('nama_varian')
-                            ->label('Varian Name')
+                            ->label('Nama Varian')
                             ->placeholder('Contoh: Dada, Paha, Panas, Dingin')
+                            ->required(),
+
+                        // Harga (Price) dengan format IDR
+                        Components\TextInput::make('price')
+                            ->label('Harga')
+                            ->prefix('IDR')
+                            ->numeric()
                             ->required(),
                     ])
             ]);
@@ -53,16 +60,22 @@ class VarianProductResource extends Resource
         return $table
             ->columns([
                 // Nama produk dari relasi
-            TextColumn::make('product.nama_produk')
-                ->label('Product')
-                ->searchable()
-                ->sortable(),
+                TextColumn::make('product.nama_produk')
+                    ->label('Product')
+                    ->searchable()
+                    ->sortable(),
 
 
                 // Nama varian
                 TextColumn::make('nama_varian')
                     ->label('Varian')
                     ->searchable()
+                    ->sortable(),
+                
+                // Harga (Price) dengan format IDR
+                TextColumn::make('price')
+                    ->label('Harga')
+                    ->prefix('IDR')
                     ->sortable(),
 
                 // Waktu dibuat

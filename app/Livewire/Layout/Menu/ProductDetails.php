@@ -24,25 +24,25 @@ class ProductDetails extends Component
     public $addOns = [];
     public $reviews = [];
     public $productId;
+    public $addonQuantities = [];
 
     public function mount($id)
     {
         $this->productId = $id;
-        $this->product = Product::with(['addons', 'ratings'])->findOrFail($id);
-        // $this->product = Product::with(['variants', 'CartartAddon', 'ratings'])->findOrFail($id);
+        $this->product = Product::with(['varianProducts', 'addons', 'ratings'])->findOrFail($id);
 
         // Variants
-        $this->variants = $this->product->variants->mapWithKeys(function($variant) {
-            return [$variant->slug => [
-                'name' => $variant->name,
-                'price' => $variant->price
+        $this->variants = $this->product->varianProducts->mapWithKeys(function($variant) {
+            return [$variant->id => [
+                'name' => $variant->nama_varian,
+                'price' => $variant->price,
             ]];
         })->toArray();
-        $this->variant = array_key_first($this->variants);
+        $this->variant = null;
 
         // Add-ons
         $this->addOns = $this->product->addons->mapWithKeys(function($addon) {
-            return [$addon->slug => [
+            return [$addon->id => [
                 'name' => $addon->name,
                 'price' => $addon->price
             ]];
@@ -58,6 +58,11 @@ class ProductDetails extends Component
                 'avatar' => strtoupper(substr($rating->customer->name ?? 'A', 0, 2))
             ];
         })->toArray();
+
+        $this->addonQuantities = [];
+        foreach ($this->addOns as $addonId => $addon) {
+            $this->addonQuantities[$addonId] = 1;
+        }
     }
 
     public function incrementQuantity()
@@ -72,6 +77,24 @@ class ProductDetails extends Component
         $this->dispatch('refresh');
     }
 
+    public function incrementAddonQuantity($addonId)
+    {
+        if (!isset($this->addonQuantities[$addonId])) {
+            $this->addonQuantities[$addonId] = 1;
+        }
+        $this->addonQuantities[$addonId]++;
+        $this->dispatch('refresh');
+    }
+
+    public function decrementAddonQuantity($addonId)
+    {
+        if (!isset($this->addonQuantities[$addonId])) {
+            $this->addonQuantities[$addonId] = 1;
+        }
+        $this->addonQuantities[$addonId] = max(1, $this->addonQuantities[$addonId] - 1);
+        $this->dispatch('refresh');
+    }
+
     public function toggleAddOn($addOnKey)
     {
         if (in_array($addOnKey, $this->selectedAddOns)) {
@@ -80,12 +103,29 @@ class ProductDetails extends Component
             });
         } else {
             $this->selectedAddOns[] = $addOnKey;
+            if (!isset($this->addonQuantities[$addOnKey])) {
+                $this->addonQuantities[$addOnKey] = 1;
+            }
         }
+    }
+
+    // Pilihan radio: hanya satu addOn yang bisa dipilih
+    public function selectAddOn($addOnKey)
+    {
+        $this->selectedAddOns = [$addOnKey];
+        if (!isset($this->addonQuantities[$addOnKey])) {
+            $this->addonQuantities[$addOnKey] = 1;
+        }
+        $this->dispatch('refresh');
     }
 
     public function getVariantPriceProperty()
     {
-        return $this->variants[$this->variant]['price'] ?? 0;
+        if ($this->variant && isset($this->variants[$this->variant]['price'])) {
+            return $this->variants[$this->variant]['price'];
+        }
+
+        return $this->product->harga_dasar ?? 0;
     }
 
     public function getAddOnsTotalProperty()
@@ -93,7 +133,8 @@ class ProductDetails extends Component
         $total = 0;
         foreach ($this->selectedAddOns as $addOnKey) {
             if (isset($this->addOns[$addOnKey])) {
-                $total += $this->addOns[$addOnKey]['price'];
+                $qty = $this->addonQuantities[$addOnKey] ?? 1;
+                $total += $this->addOns[$addOnKey]['price'] * $qty;
             }
         }
         return $total;
@@ -120,12 +161,22 @@ class ProductDetails extends Component
         if ($cartItem) {
             $cartItem->increment('quantity', $this->quantity);
         } else {
-            \App\Models\Cart::create([
+            $cartItem = \App\Models\Cart::create([
                 'user_id' => $customerId,
                 'product_id' => $this->productId ?? null,
                 'variant' => $this->variant ?? null,
                 'quantity' => $this->quantity ?? 1,
                 'price' => $this->totalPrice,
+            ]);
+        }
+
+        // Simpan addon ke tabel cart_addons
+        foreach ($this->selectedAddOns as $addOnKey) {
+            $qty = $this->addonQuantities[$addOnKey] ?? 1;
+            \App\Models\CartAddon::create([
+                'cart_id' => $cartItem->id,
+                'product_addon_id' => $addOnKey,
+                'quantity' => $qty,
             ]);
         }
 

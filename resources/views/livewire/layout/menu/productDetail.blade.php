@@ -1,10 +1,4 @@
 <div class="card product-card">
-    {{-- Flash Message --}}
-    @if (session()->has('message'))
-        <div class="alert alert-success rounded-0 mb-0" role="alert">
-            <span>{{ session('message') }}</span>
-        </div>
-    @endif
 
     <div class="card shadow rounded-4 p-4 mx-auto my-5" style="max-width: 720px;">
         {{-- Tombol Kembali --}}
@@ -22,20 +16,20 @@
         <div class="col-auto">
             <div style="width: 240px; height: 240px;" class="overflow-hidden rounded">
                 <img src="{{ asset('storage/' . $product['gambar_produk']) }}"
-                    alt="{{ $product['name'] }}"
+                    alt="{{ $product['nama_produk'] }}"
                     class="img-fluid h-100 object-fit-cover w-100 rounded">
             </div>
         </div>
 
         {{-- Informasi Produk --}}
         <div class="mb-4">
-            <h2 class="h5 fw-bold text-dark mb-1">{{ $product['name'] }}</h2>
-            <p class="text-muted small mb-2">{{ $product['description'] }}</p>
+            <div class="d-flex align-items-center justify-content-between mb-1">
+                <h2 class="h5 fw-bold text-dark mb-0">{{ $product['nama_produk'] }}</h2>
+                <div class="fw-semibold text-dark fs-5">Rp. {{ number_format($variantPrice, 0, ',', '.') }}</div>
+            </div>
+            <p class="text-muted small mb-2">{{ $product['deskripsi'] }}</p>
             <div class="d-flex align-items-center justify-content-between">
-                <div>
-                    <div class="fw-semibold text-dark">Rp. {{ number_format($this->variantPrice, 0, ',', '.') }}</div>
-                    <div class="text-secondary small">per porsi</div>
-                </div>
+                <div class="text-secondary small">per porsi</div>
                 {{-- Selector Jumlah --}}
                 <div class="quantity-selector d-flex align-items-center" wire:key="qty-selector">
                     <button type="button" wire:click="decrementQuantity" class="btn btn-outline-secondary px-3">−</button>
@@ -50,15 +44,15 @@
             <h3 class="section-title">Varian :</h3>
             <div class="vstack gap-2">
                 @foreach($variants as $key => $variantData)
-                    <div class="variant-option {{ $variant === $key ? 'active' : '' }}">
-                        <div class="form-check m-0">
+                    <div class="variant-option {{ $variant === $key ? 'active' : '' }} d-flex justify-content-between align-items-center">
+                        <div class="form-check m-0 d-flex align-items-center">
                             <input class="form-check-input" type="radio" name="variant" id="variant_{{ $key }}"
                                    wire:model.live="variant" value="{{ $key }}">
-                            <label class="form-check-label ms-2" for="variant_{{ $key }}">
+                            <label class="form-check-label ms-2 mb-0" for="variant_{{ $key }}">
                                 {{ $variantData['name'] }}
                             </label>
                         </div>
-                        <span class="price">Rp. {{ number_format($variantData['price'], 0, ',', '.') }}</span>
+                        <span class="price ms-3">Rp. {{ number_format($variantData['price'], 0, ',', '.') }}</span>
                     </div>
                 @endforeach
             </div>
@@ -70,17 +64,28 @@
             <div class="vstack gap-2">
                 @foreach($addOns as $key => $addOn)
                     <div class="addon-option {{ in_array($key, $selectedAddOns) ? 'active' : '' }}">
-                        <div class="form-check m-0">
-                            <input class="form-check-input" type="checkbox" id="addon_{{ $key }}"
-                                   wire:click="toggleAddOn('{{ $key }}')"
-                                   @if(in_array($key, $selectedAddOns)) checked @endif>
-                            <label class="form-check-label ms-2" for="addon_{{ $key }}">
-                                {{ $addOn['name'] }}
-                            </label>
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <div class="form-check m-0 d-flex align-items-center">
+                                <input class="form-check-input" type="radio" name="addon" id="addon_{{ $key }}"
+                                       wire:click="selectAddOn('{{ $key }}')"
+                                       @if(in_array($key, $selectedAddOns)) checked @endif>
+                                <label class="form-check-label ms-2 mb-0" for="addon_{{ $key }}">
+                                    {{ $addOn['name'] }}
+                                </label>
+                            </div>
+                            <div class="d-flex align-items-center">
+                                @if(in_array($key, $selectedAddOns))
+                                <div class="quantity-selector d-flex align-items-center me-3">
+                                    <button type="button" wire:click="decrementAddonQuantity('{{ $key }}')" class="btn btn-outline-secondary px-2 py-1">−</button>
+                                    <span class="mx-2 fw-semibold">{{ $addonQuantities[$key] ?? 1 }}</span>
+                                    <button type="button" wire:click="incrementAddonQuantity('{{ $key }}')" class="btn btn-outline-secondary px-2 py-1">+</button>
+                                </div>
+                                @endif
+                                <div class="badge-price ms-4">
+                                    Rp. {{ number_format($addOn['price'], 0, ',', '.') }}
+                                </div>
+                            </div>
                         </div>
-                        <span class="badge-price">
-                            Rp. {{ number_format($addOn['price'], 0, ',', '.') }}
-                        </span>
                     </div>
                 @endforeach
             </div>
@@ -132,3 +137,4 @@
         </div>
     </div>
 </div>
+

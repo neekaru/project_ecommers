@@ -38,10 +38,10 @@
 
                 <h5 class="fw-bold mb-2">PILIH METODE PEMESANAN</h5>
                 <div class="mb-3">
-                    @foreach(['Dine-in', 'Take Away', 'Driver Thru', 'Catering'] as $method)
+                    @foreach(['dine_in' => 'Dine In', 'take_away' => 'Take Away', 'drive_thru' => 'Drive Thru', 'catering' => 'Catering'] as $value => $label)
                         <div class="form-check form-check-inline">
-                            <input type="radio" wire:model="metodePemesanan" class="form-check-input" value="{{ $method }}" id="pesan_{{ $method }}">
-                            <label class="form-check-label" for="pesan_{{ $method }}">{{ $method }}</label>
+                            <input type="radio" wire:model="metodePemesanan" class="form-check-input" value="{{ $value }}" id="pesan_{{ $value }}">
+                            <label class="form-check-label" for="pesan_{{ $value }}">{{ $label }}</label>
                         </div>
                     @endforeach
                 </div>
@@ -58,18 +58,13 @@
                     </div>
                 </div>
 
-                <div class="form-check form-switch mb-3">
+                {{-- <div class="form-check form-switch mb-3">
                 <input type="checkbox" wire:model="jadwalAktif" class="form-check-input" id="jadwalSwitch">
                 <label class="form-check-label" for="jadwalSwitch">Jadwalin Pengambilan/Pengantaran</label>
-                </div>
+                </div> --}}
 
                 <button wire:click="submit" class="btn btn-success w-100">pesan sekarang</button>
                
-                @if (session()->has('success'))
-                    <div class="alert alert-success mt-3">
-                        {{ session('success') }}
-                    </div>
-                @endif
 
                 @if($jadwalAktif)
             
