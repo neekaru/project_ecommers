@@ -5,7 +5,7 @@
         @foreach($items as $item)
             <div class="d-flex justify-content-between align-items-center py-3 border-bottom">
                 <div class="d-flex gap-3 align-items-start">
-                    <img src="{{ $item['image'] }}" alt="{{ $item['name'] }}" class="rounded" style="width: 48px; height: 48px; object-fit: cover;">
+                    <img src="{{ $item['image'] }}" alt="{{ $item['nama_produk'] }}" class="rounded" style="width: 48px; height: 48px; object-fit: cover;">
                     <div>
                         <div class="fw-semibold">{{ $item['name'] }}</div>
                         <div class="text-muted small">{{ $item['desc'] }}</div>
@@ -24,9 +24,12 @@
         </div>
 
         <div class="mt-4 text-center">
-            <button class="btn btn-success px-4 py-2">
-                pesan sekarang
-            </button>
+         <a href="{{ route('checkout') }}" class="btn btn-success w-100 text-white text-decoration-none">
+        Checkout
+        </a>
+           {{-- <button type="button" wire:click="Checkout" class="btn btn-success w-100 fw-semibold text-uppercase py-2">
+                Checkout
+            </button> --}}
         </div>
     </div>
 </div>

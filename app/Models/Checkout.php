@@ -14,8 +14,8 @@ class Checkout extends Model
         'product_id',
         'customer_id',
         'total_harga',
-        'catatan',
-        'metode_pembayaran',  // kolom metode pembayaran
+        'metode_pembayaran'
+         // kolom metode pembayaran
     ];
 
     public function customer(): BelongsTo
