@@ -2,9 +2,15 @@
 
 namespace App\Livewire\Checkout;
 
+use App\Models\Customer;
+use App\Models\Transaction;
+use App\Models\TransactionDetail;
+use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 use App\Models\Cart as CartModel;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.app')]
 class Checkout extends Component
 {
     public $items = [];
@@ -52,15 +58,44 @@ class Checkout extends Component
 
         $this->validate($rules);
 
-        // Simulasi proses simpan pesanan
+        $customer = Customer::updateOrCreate(
+            ['telepon' => $this->telepon],
+            [
+                'nama' => $this->nama,
+                'alamat' => $this->alamat,
+                'email' => $this->telepon . '@mail.com',
+                'password' => bcrypt($this->telepon)
+            ]
+        );
+
+        $transaction = Transaction::create([
+            'customer_id' => $customer->id,
+            'total_harga' => $this->subtotal,
+            'metode_pembayaran' => $this->metodePembayaran,
+            'catatan' => $this->metodePemesanan,
+        ]);
+
+        $cartItems = CartModel::with('product')->where('user_id', auth()->guard('customers')->id())->get();
+
+        foreach ($cartItems as $cart) {
+            TransactionDetail::create([
+                'transaction_id' => $transaction->id,
+                'product_id' => $cart->product_id,
+                'quantity' => $cart->quantity,
+                'price' => $cart->product->harga_dasar,
+                'subtotal' => $cart->product->harga_dasar * $cart->quantity,
+            ]);
+        }
+
+        CartModel::where('user_id', auth()->guard('customers')->id())->delete();
+
         session()->flash('success', 'Pesanan Anda berhasil dikirim!');
 
-        // Optional: redirect atau reset input
-        return redirect()->route('menu'); // atau rute konfirmasi
+        return redirect()->route('menu');
     }
 
     public function render()
     {
-        return view('livewire.checkout.checkout')->layout('components.layouts.app');
+        return view('livewire.checkout.checkout');
     }
 }
