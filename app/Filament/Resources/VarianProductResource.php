@@ -35,7 +35,7 @@ class VarianProductResource extends Resource
                         // Select Product
                         Components\Select::make('product_id')
                             ->label('Nama Makanan')
-                            ->relationship('product', 'nama_produk') // ganti sesuai nama kolom produk kamu
+                            ->relationship('product', 'nama_produk')
                             ->searchable()
                             ->required(),
 
@@ -43,6 +43,13 @@ class VarianProductResource extends Resource
                         Components\TextInput::make('nama_varian')
                             ->label('Nama Varian')
                             ->placeholder('Contoh: Dada, Paha, Panas, Dingin')
+                            ->required(),
+
+                        // Harga (Price) dengan format IDR
+                        Components\TextInput::make('price')
+                            ->label('Harga')
+                            ->prefix('IDR')
+                            ->numeric()
                             ->required(),
                     ])
             ]);
@@ -53,16 +60,22 @@ class VarianProductResource extends Resource
         return $table
             ->columns([
                 // Nama produk dari relasi
-            TextColumn::make('product.nama_produk')
-                ->label('Product')
-                ->searchable()
-                ->sortable(),
+                TextColumn::make('product.nama_produk')
+                    ->label('Product')
+                    ->searchable()
+                    ->sortable(),
 
 
                 // Nama varian
                 TextColumn::make('nama_varian')
                     ->label('Varian')
                     ->searchable()
+                    ->sortable(),
+                
+                // Harga (Price) dengan format IDR
+                TextColumn::make('price')
+                    ->label('Harga')
+                    ->prefix('IDR')
                     ->sortable(),
 
                 // Waktu dibuat

@@ -23,13 +23,13 @@
 
         {{-- Informasi Produk --}}
         <div class="mb-4">
-            <h2 class="h5 fw-bold text-dark mb-1">{{ $product['nama_produk'] }}</h2>
+            <div class="d-flex align-items-center justify-content-between mb-1">
+                <h2 class="h5 fw-bold text-dark mb-0">{{ $product['nama_produk'] }}</h2>
+                <div class="fw-semibold text-dark fs-5">Rp. {{ number_format($this->variantPrice, 0, ',', '.') }}</div>
+            </div>
             <p class="text-muted small mb-2">{{ $product['deskripsi'] }}</p>
             <div class="d-flex align-items-center justify-content-between">
-                <div>
-                    <div class="fw-semibold text-dark">Rp. {{ number_format($this->variantPrice, 0, ',', '.') }}</div>
-                    <div class="text-secondary small">per porsi</div>
-                </div>
+                <div class="text-secondary small">per porsi</div>
                 {{-- Selector Jumlah --}}
                 <div class="quantity-selector d-flex align-items-center" wire:key="qty-selector">
                     <button type="button" wire:click="decrementQuantity" class="btn btn-outline-secondary px-3">−</button>
@@ -44,15 +44,15 @@
             <h3 class="section-title">Varian :</h3>
             <div class="vstack gap-2">
                 @foreach($variants as $key => $variantData)
-                    <div class="variant-option {{ $variant === $key ? 'active' : '' }}">
-                        <div class="form-check m-0">
+                    <div class="variant-option {{ $variant === $key ? 'active' : '' }} d-flex justify-content-between align-items-center">
+                        <div class="form-check m-0 d-flex align-items-center">
                             <input class="form-check-input" type="radio" name="variant" id="variant_{{ $key }}"
                                    wire:model.live="variant" value="{{ $key }}">
-                            <label class="form-check-label ms-2" for="variant_{{ $key }}">
+                            <label class="form-check-label ms-2 mb-0" for="variant_{{ $key }}">
                                 {{ $variantData['name'] }}
                             </label>
                         </div>
-                        <span class="price">Rp. {{ number_format($variantData['price'], 0, ',', '.') }}</span>
+                        <span class="price ms-3">Rp. {{ number_format($variantData['price'], 0, ',', '.') }}</span>
                     </div>
                 @endforeach
             </div>
@@ -64,17 +64,19 @@
             <div class="vstack gap-2">
                 @foreach($addOns as $key => $addOn)
                     <div class="addon-option {{ in_array($key, $selectedAddOns) ? 'active' : '' }}">
-                        <div class="form-check m-0">
-                            <input class="form-check-input" type="checkbox" id="addon_{{ $key }}"
-                                   wire:click="toggleAddOn('{{ $key }}')"
-                                   @if(in_array($key, $selectedAddOns)) checked @endif>
-                            <label class="form-check-label ms-2" for="addon_{{ $key }}">
-                                {{ $addOn['name'] }}
-                            </label>
+                        <div class="d-flex justify-content-between align-items-center w-100">
+                            <div class="form-check m-0 d-flex align-items-center">
+                                <input class="form-check-input" type="radio" id="addon_{{ $key }}"
+                                       wire:click="toggleAddOn('{{ $key }}')"
+                                       @if(in_array($key, $selectedAddOns)) checked @endif>
+                                <label class="form-check-label ms-2 mb-0" for="addon_{{ $key }}">
+                                    {{ $addOn['name'] }}
+                                </label>
+                            </div>
+                            <span class="badge-price ms-3">
+                                Rp. {{ number_format($addOn['price'], 0, ',', '.') }}
+                            </span>
                         </div>
-                        <span class="badge-price">
-                            Rp. {{ number_format($addOn['price'], 0, ',', '.') }}
-                        </span>
                     </div>
                 @endforeach
             </div>
