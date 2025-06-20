@@ -2,11 +2,16 @@
     {{-- Profil User --}}
     <div class="card shadow-sm p-4 mb-4">
         <div class="d-flex align-items-center">
-            <img src="{{ asset('storage/avatar.jpg') }}" alt="Profile Picture" class="rounded-circle" width="80">
+            <div class="position-relative">
+                <img src="{{ auth('customers')->user()->avatar ? asset('storage/' . auth('customers')->user()->avatar) : asset('storage/avatar.jpg') }}" alt="Profile Picture" class="rounded-circle" width="80" height="80">
+                <a href="{{ route('user.edit-profile') }}" class="position-absolute bottom-0 end-0 bg-light rounded-circle p-1" style="transform: translate(25%, 25%);" title="Edit Profile">
+                    <i class="fas fa-pencil-alt"></i>
+                </a>
+            </div>
             <div class="ms-3">
                 <h4 class="mb-0">{{ auth('customers')->user()->nama }}</h4>
                 <small>{{ auth('customers')->user()->email }}</small><br>
-                <small>{{ auth('customers')->user()->telepon ?? '0852-xxxx' }}</small><br>
+                <small>{{ auth('customers')->user()->telepon ?? 'Nomor telepon belum diatur' }}</small><br>
                 <small>{{ auth('customers')->user()->alamat ?? 'Alamat belum diatur' }}</small>
             </div>
             <button wire:click="logout" class="btn btn-sm btn-outline-danger ms-auto">Logout</button>
@@ -14,7 +19,7 @@
     </div>
 
     {{-- Notifikasi Pesanan --}}
-    <div class="card shadow-sm p-4" wire:poll.5s>
+    <div class="card shadow-sm p-4 mb-4" wire:poll.5s>
         <h5><i class="fa fa-bell text-danger me-2"></i> Notifikasi Pesanan</h5>
         <p class="text-muted">Update terbaru tentang pesanan anda</p>
 

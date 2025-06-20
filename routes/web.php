@@ -32,3 +32,8 @@ Route::middleware(['auth:customers'])->group(function () {
 });
 
 Route::get('/checkout', Checkout::class)->name('checkout');
+use App\Livewire\User\EditProfile;
+
+Route::middleware('auth:customers')->group(function () {
+    Route::get('/user/edit-profile', EditProfile::class)->name('user.edit-profile');
+});
