@@ -2,6 +2,7 @@
 
 namespace App\Livewire\User;
 
+use App\Models\Pesanan;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Attributes\Layout;
@@ -17,26 +18,11 @@ class Dashboard extends Component
 
     public function render()
     {
-        $orders = [
-            [
-                'status' => 'Pesanan Diproses',
-                'message' => 'Pesanan #ORD-2025-001 sedang di proses oleh tim dapur kami',
-                'waktu' => '15 menit yang lalu',
-                'label' => 'Diproses'
-            ],
-            [
-                'status' => 'Pesanan Siap Diambil',
-                'message' => 'Pesanan #ORD-2025-001 sudah siap dan menunggu untuk diambil',
-                'waktu' => '30 menit yang lalu',
-                'label' => 'Siap Diambil'
-            ],
-            [
-                'status' => 'Pesanan Selesai',
-                'message' => 'Pesanan #ORD-2025-001 telah selesai. Terima kasih atas kepercayaan anda!',
-                'waktu' => '1 jam yang lalu',
-                'label' => 'Selesai'
-            ]
-        ];
+        $customerId = Auth::guard('customers')->id();
+        $orders = Pesanan::where('customer_id', $customerId)
+            ->whereIn('status', ['menunggu', 'dikonfirmasi', 'selesai', 'ditolak'])
+            ->latest()
+            ->get();
 
         return view('livewire.user.dashboard', [
             'orders' => $orders

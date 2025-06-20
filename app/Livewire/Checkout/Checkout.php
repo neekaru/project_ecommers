@@ -85,6 +85,13 @@ class Checkout extends Component
             'catatan' => $this->metodePemesanan,
         ]);
 
+        \App\Models\Pesanan::create([
+            'customer_id' => $customer->id,
+            'total' => $this->subtotal,
+            'status' => 'menunggu',
+            'waktu' => now(),
+        ]);
+
         $cartItems = CartModel::with('product')->where('user_id', auth()->guard('customers')->id())->get();
 
         foreach ($cartItems as $cart) {
