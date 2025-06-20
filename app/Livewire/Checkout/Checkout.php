@@ -27,12 +27,22 @@ class Checkout extends Component
 
     public function mount()
     {
-        $cartItems = CartModel::with('product')->where('user_id', auth()->guard('customers')->id())->get();
+        $cartItems = CartModel::with(['product', 'variantProduct', 'addons'])->where('user_id', auth()->guard('customers')->id())->get();
         $this->items = $cartItems->map(function($cart) {
+            $price = $cart->variant_id
+                ? $cart->variantProduct->price ?? ($cart->product->harga_dasar ?? 0)
+                : ($cart->product->harga_dasar ?? 0);
+
+            // Get add-ons
+            $addOnsTotal = 0;
+            foreach ($cart->addons as $addon) {
+                $addOnsTotal += $addon->productAddon->price * $addon->quantity;
+            }
+
             return [
                 'name' => $cart->product->nama_produk ?? '-',
                 'desc' => $cart->product->deskripsi ?? '',
-                'price' => $cart->product->harga_dasar ?? 0,
+                'price' => $price + $addOnsTotal,
                 'qty' => $cart->quantity ?? 1,
                 'image' => $cart->product->gambar_produk ?? 'https://via.placeholder.com/50',
             ];
@@ -78,12 +88,25 @@ class Checkout extends Component
         $cartItems = CartModel::with('product')->where('user_id', auth()->guard('customers')->id())->get();
 
         foreach ($cartItems as $cart) {
+            $price = $cart->variant_id
+                ? $cart->variantProduct->price ?? ($cart->product->harga_dasar ?? 0)
+                : ($cart->product->harga_dasar ?? 0);
+
+            // Get add-ons
+            $addOnsTotal = 0;
+            foreach ($cart->addons as $addon) {
+                $addOnsTotal += $addon->productAddon->price * $addon->quantity;
+            }
+
+            $totalPrice = $price + $addOnsTotal;
+
             TransactionDetail::create([
                 'transaction_id' => $transaction->id,
                 'product_id' => $cart->product_id,
+                'variant_id' => $cart->variant_id,
                 'quantity' => $cart->quantity,
-                'price' => $cart->product->harga_dasar,
-                'subtotal' => $cart->product->harga_dasar * $cart->quantity,
+                'price' => $totalPrice,
+                'subtotal' => $totalPrice * $cart->quantity,
             ]);
         }
 

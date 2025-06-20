@@ -107,6 +107,7 @@ class ProductDetails extends Component
                 $this->addonQuantities[$addOnKey] = 1;
             }
         }
+        $this->dispatch('refresh');
     }
 
     // Pilihan radio: hanya satu addOn yang bisa dipilih
@@ -137,12 +138,16 @@ class ProductDetails extends Component
                 $total += $this->addOns[$addOnKey]['price'] * $qty;
             }
         }
+
         return $total;
     }
 
     public function getTotalPriceProperty()
     {
-        return ($this->variantPrice + $this->addOnsTotal) * $this->quantity;
+        // If variant is selected, use variant price + add-ons total
+        // Otherwise, use base price + add-ons total
+        $basePrice = $this->variant ? $this->variantPrice : $this->product->harga_dasar;
+        return ($basePrice + $this->addOnsTotal) * $this->quantity;
     }
 
     public function addToCart()
@@ -156,17 +161,23 @@ class ProductDetails extends Component
 
         $cartItem = \App\Models\Cart::where('product_id', $this->productId)
             ->where('user_id', $customerId)
+            ->where('variant_id', $this->variant)
             ->first();
-        
+
+        // Calculate the price based on variant or base price
+        $price = $this->variant
+            ? ($this->variants[$this->variant]['price'] + $this->addOnsTotal)
+            : ($this->product->harga_dasar + $this->addOnsTotal);
+
         if ($cartItem) {
             $cartItem->increment('quantity', $this->quantity);
         } else {
             $cartItem = \App\Models\Cart::create([
                 'user_id' => $customerId,
                 'product_id' => $this->productId ?? null,
-                'variant' => $this->variant ?? null,
+                'variant_id' => $this->variant ?? null,
                 'quantity' => $this->quantity ?? 1,
-                'price' => $this->totalPrice,
+                'price' => $price,
             ]);
         }
 
@@ -184,7 +195,7 @@ class ProductDetails extends Component
         return redirect('/cart'); // langsung redirect
     }
 
-    public function render() 
+    public function render()
     {
         return view('livewire.layout.menu.productDetail', [
             'product' => $this->product,
@@ -194,8 +205,6 @@ class ProductDetails extends Component
             'variantPrice' => $this->variantPrice,
             'addOnsTotal' => $this->addOnsTotal,
             'totalPrice' => $this->totalPrice
-        ])->layout('components.layouts.app', [
-            'title' => $this->product->name ?? 'Product Details'
         ]);
     }
 }

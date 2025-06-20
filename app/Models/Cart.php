@@ -9,6 +9,7 @@ class Cart extends Model
     protected $fillable = [
         'user_id',
         'product_id',
+        'variant_id',
         'quantity',
         'price',
         'notes',
@@ -23,6 +24,12 @@ class Cart extends Model
     {
         return $this->belongsTo(Product::class);
     }
+
+    public function variantProduct()
+    {
+        return $this->belongsTo(VarianProduct::class, 'variant_id');
+    }
+
     public function addons()
     {
         return $this->hasMany(CartAddon::class);

@@ -66,8 +66,8 @@
                     <div class="addon-option {{ in_array($key, $selectedAddOns) ? 'active' : '' }}">
                         <div class="d-flex justify-content-between align-items-center w-100">
                             <div class="form-check m-0 d-flex align-items-center">
-                                <input class="form-check-input" type="radio" name="addon" id="addon_{{ $key }}"
-                                       wire:click="selectAddOn('{{ $key }}')"
+                                <input class="form-check-input" type="checkbox" name="addon" id="addon_{{ $key }}"
+                                       wire:click="toggleAddOn('{{ $key }}')"
                                        @if(in_array($key, $selectedAddOns)) checked @endif>
                                 <label class="form-check-label ms-2 mb-0" for="addon_{{ $key }}">
                                     {{ $addOn['name'] }}
