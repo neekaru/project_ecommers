@@ -121,7 +121,7 @@ class Checkout extends Component
 
         session()->flash('success', 'Pesanan Anda berhasil dikirim!');
 
-        return redirect()->route('menu');
+        return redirect('/user');
     }
 
     public function render()
