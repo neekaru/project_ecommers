@@ -32,7 +32,6 @@
           <li class="nav-item dropdown">
             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
               <i class="fas fa-user"></i>
-              {{ auth('customers')->user()->nama }}
             </a>
             <ul class="dropdown-menu" aria-labelledby="userDropdown">
               <li><a class="dropdown-item" href="/user" wire:navigate>Dashboard</a></li>
@@ -45,7 +44,6 @@
           <li class="nav-item">
             <a class="nav-link" href="/login" aria-label="Login" wire:navigate>
               <i class="fas fa-user"></i>
-              Login
             </a>
           </li>
         @endif
