@@ -3,9 +3,18 @@
 namespace App\Livewire\User;
 
 use Livewire\Component;
+use Illuminate\Support\Facades\Auth;
+use Livewire\Attributes\Layout;
 
+#[Layout('components.layouts.app', ['title' => 'Dashboard'])]
 class Dashboard extends Component
 {
+    public function logout()
+    {
+        Auth::guard('customers')->logout();
+        return $this->redirect('/');
+    }
+
     public function render()
     {
         $orders = [
