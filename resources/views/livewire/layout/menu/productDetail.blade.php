@@ -112,7 +112,7 @@
                 @forelse($reviews as $review)
                     <div class="d-flex gap-2">
                         <div class="avatar-circle">
-                            <span class="small fw-medium">{{ $review['avatar'] }}</span>
+                            <img src="{{ $review['avatar'] }}" alt="{{ $review['name'] }}" class="rounded-circle" width="36" height="36" style="object-fit: cover;">
                         </div>
                         <div>
                             <div class="d-flex align-items-center gap-2 mb-1">

@@ -16,9 +16,8 @@
                     <div class="col-md-6">
                         <h5 class="fw-bold">Order #{{ $order->id }}</h5>
                         <p class="text-muted small mb-3">{{ $order->created_at->translatedFormat('l, d F Y, H:i') }} WIB</p>
-                        <p class="mt-3">
-                            <strong class="d-block">Metode Pemesanan:</strong>
-                            <span class="badge bg-primary-soft">{{ $order->transaction?->catatan ?? '-' }}</span>
+                        <p class="mt-3 fw-bold text-dark">
+                            Metode Pemesanan: {{ $catatanDisplay }}
                         </p>
                         @if (Str::lower($order->transaction?->catatan ?? '') == 'dine_in')
                             <p class="text-muted small">Silahkan ambil pesanan Anda di kasir.</p>
