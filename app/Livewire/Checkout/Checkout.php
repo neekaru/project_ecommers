@@ -68,15 +68,93 @@ class Checkout extends Component
 
         $this->validate($rules);
 
-        $customer = Customer::updateOrCreate(
-            ['telepon' => $this->telepon],
-            [
-                'nama' => $this->nama,
-                'alamat' => $this->alamat,
-                'email' => $this->telepon . '@mail.com',
-                'password' => bcrypt($this->telepon)
-            ]
-        );
+        if (strtolower($this->metodePembayaran) === 'qris') {
+            // Store checkout data in session for Tripay callback
+            session([
+                'checkout_nama' => $this->nama,
+                'checkout_telepon' => $this->telepon,
+                'checkout_alamat' => $this->alamat,
+                'checkout_metodePemesanan' => $this->metodePemesanan,
+                'checkout_metodePembayaran' => $this->metodePembayaran,
+                'checkout_jadwalAktif' => $this->jadwalAktif,
+                'checkout_tanggal' => $this->tanggal,
+                'checkout_waktu' => $this->waktu,
+            ]);
+            // Redirect to Tripay payment page
+            $tripayUrl = $this->getTripayPaymentUrl();
+            return redirect()->away($tripayUrl);
+        }
+
+        $this->createOrder();
+    }
+
+    public function getTripayPaymentUrl()
+    {
+        // Mock Tripay payment URL (replace with real API integration)
+        // You can pass a unique reference or session id if needed
+        return url('/checkout/tripay-callback?success=1');
+    }
+
+    public function tripayCallback()
+    {
+        // Here you would validate the Tripay callback (signature, status, etc.)
+        // For now, we assume payment is successful if ?success=1
+        if (request('success') == 1) {
+            // Restore checkout data from session
+            $this->nama = session('checkout_nama');
+            $this->telepon = session('checkout_telepon');
+            $this->alamat = session('checkout_alamat');
+            $this->metodePemesanan = session('checkout_metodePemesanan');
+            $this->metodePembayaran = session('checkout_metodePembayaran');
+            $this->jadwalAktif = session('checkout_jadwalAktif');
+            $this->tanggal = session('checkout_tanggal');
+            $this->waktu = session('checkout_waktu');
+            $this->createOrder();
+            // Clear session data after use
+            session()->forget([
+                'checkout_nama',
+                'checkout_telepon',
+                'checkout_alamat',
+                'checkout_metodePemesanan',
+                'checkout_metodePembayaran',
+                'checkout_jadwalAktif',
+                'checkout_tanggal',
+                'checkout_waktu',
+            ]);
+            session()->flash('success', 'Pembayaran QRIS berhasil, pesanan Anda dikirim!');
+            return redirect('/user');
+        } else {
+            session()->flash('error', 'Pembayaran QRIS gagal atau dibatalkan.');
+            return redirect('/checkout');
+        }
+    }
+
+    public function createOrder()
+    {
+        // Use logged-in customer if available
+        if (auth()->guard('customers')->check()) {
+            $customer = \App\Models\Customer::find(auth()->guard('customers')->id());
+            // Optionally update customer info from form
+            if ($customer) {
+                $customer->nama = $this->nama;
+                $customer->alamat = $this->alamat;
+                $customer->telepon = $this->telepon;
+                $customer->email = $this->telepon . '@mail.com';
+                $customer->save();
+            }
+        } else {
+            $customer = Customer::updateOrCreate(
+                ['telepon' => $this->telepon],
+                [
+                    'nama' => $this->nama,
+                    'alamat' => $this->alamat,
+                    'email' => $this->telepon . '@mail.com',
+                    'password' => bcrypt($this->telepon)
+                ]
+            );
+            // Optionally log in the new customer
+            auth()->guard('customers')->login($customer);
+        }
 
         $transaction = Transaction::create([
             'customer_id' => $customer->id,
@@ -92,7 +170,7 @@ class Checkout extends Component
             'waktu' => now(),
         ]);
 
-        $cartItems = CartModel::with('product')->where('user_id', auth()->guard('customers')->id())->get();
+        $cartItems = CartModel::with('product')->where('user_id', $customer->id)->get();
 
         foreach ($cartItems as $cart) {
             $price = $cart->variant_id
@@ -117,7 +195,7 @@ class Checkout extends Component
             ]);
         }
 
-        CartModel::where('user_id', auth()->guard('customers')->id())->delete();
+        CartModel::where('user_id', $customer->id)->delete();
 
         session()->flash('success', 'Pesanan Anda berhasil dikirim!');
 

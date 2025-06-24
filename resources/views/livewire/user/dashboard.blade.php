@@ -1,3 +1,4 @@
+@php use Illuminate\Support\Str; @endphp
 <div class="container mt-5">
     {{-- Profil User --}}
     <div class="card shadow-sm p-4 mb-4">
@@ -71,6 +72,86 @@
         @empty
             <div class="text-center text-muted">
                 <p>Tidak ada notifikasi pesanan saat ini.</p>
+            </div>
+        @endforelse
+    </div>
+
+    {{-- Histori Pesanan --}}
+    <div class="card shadow-sm p-4 mb-4">
+        <h5><i class="fa fa-history text-primary me-2"></i> Histori Pesanan</h5>
+        <p class="text-muted">Riwayat pesanan anda yang telah selesai atau dibatalkan.</p>
+
+        @forelse ($orders->whereIn('status', ['selesai', 'ditolak']) as $order)
+            <a href="{{ route('user.order.detail', ['order' => $order->id]) }}" class="text-decoration-none text-dark">
+                <div class="card shadow-sm rounded-4 mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <h5>Order#:{{ $order->id }}</h5>
+                                <p class="text-muted small">{{ $order->created_at->format('d-F-Y, H:i') }} wib</p>
+                                @php
+                                    $catatanMap = [
+                                        'dine_in' => 'Dine In',
+                                        'take_away' => 'Take Away',
+                                        'drive_thru' => 'Drive Thru',
+                                        'catering' => 'Catering'
+                                    ];
+                                    $catatanLabel = $order->transaction?->catatan ?? null;
+                                @endphp
+                                <p class="mt-3">
+                                    Metode pemesanan anda:
+                                    {{ $catatanLabel && isset($catatanMap[$catatanLabel]) ? $catatanMap[$catatanLabel] : ($catatanLabel ?? '-') }}
+                                </p>
+                            </div>
+                            @if ($order->transaction && $detail = $order->transaction->details->first())
+                                @php
+                                    $product = $detail->product;
+                                @endphp
+                                <div class="text-end">
+                                    <div class="d-flex align-items-start">
+                                        <div class="me-3 text-start">
+                                            <h5 class="mb-0">{{ $product->nama_product }}</h5>
+                                            <small class="text-muted">{{ 'Rp ' . number_format($detail->total_harga, 0, ',', '.') }}</small>
+
+                                            @if ($order->status == 'selesai' && ($order->komentar || ($detail && \App\Models\Rating::where('product_id', $detail->product_id)->where('customer_id', auth('customers')->id())->exists())))
+                                                <div class="mt-2">
+                                                    @php
+                                                        $komentar = $detail ? \App\Models\Komentar::where('product_id', $detail->product_id)->where('customer_id', auth('customers')->id())->first() : null;
+                                                    @endphp
+                                                    @if ($komentar)
+                                                        <p class="mb-1 fst-italic"><strong>Ulasan:</strong> "{{ Str::limit($komentar->isi, 30) }}"</p>
+                                                    @endif
+                                                    @php
+                                                        $rating = $detail ? \App\Models\Rating::where('product_id', $detail->product_id)->where('customer_id', auth('customers')->id())->first() : null;
+                                                    @endphp
+                                                    @if ($rating)
+                                                        <div class="d-flex align-items-center">
+                                                            <strong class="me-2">Rating:</strong>
+                                                            <div class="d-flex">
+                                                                @for ($i = 1; $i <= 5; $i++)
+                                                                    <i class="fas fa-star @if($i <= $rating->rating) text-warning @else text-secondary @endif"></i>
+                                                                @endfor
+                                                            </div>
+                                                        </div>
+                                                    @endif
+                                                </div>
+                                            @elseif($order->status == 'selesai')
+                                                <p class="mt-2 mb-1 text-muted">Belum ada ulasan</p>
+                                            @endif
+                                            <span class="badge bg-{{ $order->status == 'selesai' ? 'success' : 'danger' }} mt-2">{{ Str::title($order->status) }}</span>
+                                        </div>
+                                        <img src="{{ asset('storage/' . $product->gambar) }}" alt="{{ $product->nama_product }}" class="rounded"
+                                            width="80" height="80">
+                                    </div>
+                                </div>
+                            @endif
+                        </div>
+                    </div>
+                </div>
+            </a>
+        @empty
+            <div class="text-center text-muted">
+                <p>Tidak ada riwayat pesanan.</p>
             </div>
         @endforelse
     </div>

@@ -19,7 +19,8 @@ class Dashboard extends Component
     public function render()
     {
         $customerId = Auth::guard('customers')->id();
-        $orders = Pesanan::where('customer_id', $customerId)
+        $orders = Pesanan::with('transaction')
+            ->where('customer_id', $customerId)
             ->whereIn('status', ['menunggu', 'dikonfirmasi', 'selesai', 'ditolak'])
             ->latest()
             ->get();

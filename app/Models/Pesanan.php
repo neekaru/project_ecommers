@@ -20,4 +20,17 @@ class Pesanan extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+
+    public function orderMethod()
+    {
+        return $this->belongsTo(OrderMethod::class);
+    }
+
+    // Removed rating() relationship because ratings table does not have pesanan_id
+
+    // Removed komentar() relationship because komentars table does not have pesanan_id
+    public function transaction()
+    {
+        return $this->hasOne(\App\Models\Transaction::class, 'customer_id', 'customer_id')->latestOfMany();
+    }
 }
