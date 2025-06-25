@@ -26,11 +26,27 @@
             <i class="fas fa-shopping-cart"></i>
           </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="/login" aria-label="Akun Pengguna">
-            <i class="fas fa-user"></i>
-          </a>
-        </li>
+        
+        @if(auth('customers')->check())
+          <!-- User is logged in - show user dashboard and logout -->
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              <i class="fas fa-user"></i>
+            </a>
+            <ul class="dropdown-menu" aria-labelledby="userDropdown">
+              <li><a class="dropdown-item" href="/user" wire:navigate>Dashboard</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><button class="dropdown-item" wire:click="logout">Logout</button></li>
+            </ul>
+          </li>
+        @else
+          <!-- User is not logged in - show login -->
+          <li class="nav-item">
+            <a class="nav-link" href="/login" aria-label="Login" wire:navigate>
+              <i class="fas fa-user"></i>
+            </a>
+          </li>
+        @endif
       </ul>
     </div>
   </div>

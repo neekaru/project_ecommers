@@ -66,8 +66,8 @@
                     <div class="addon-option {{ in_array($key, $selectedAddOns) ? 'active' : '' }}">
                         <div class="d-flex justify-content-between align-items-center w-100">
                             <div class="form-check m-0 d-flex align-items-center">
-                                <input class="form-check-input" type="radio" name="addon" id="addon_{{ $key }}"
-                                       wire:click="selectAddOn('{{ $key }}')"
+                                <input class="form-check-input" type="checkbox" name="addon" id="addon_{{ $key }}"
+                                       wire:click="toggleAddOn('{{ $key }}')"
                                        @if(in_array($key, $selectedAddOns)) checked @endif>
                                 <label class="form-check-label ms-2 mb-0" for="addon_{{ $key }}">
                                     {{ $addOn['name'] }}
@@ -112,7 +112,7 @@
                 @forelse($reviews as $review)
                     <div class="d-flex gap-2">
                         <div class="avatar-circle">
-                            <span class="small fw-medium">{{ $review['avatar'] }}</span>
+                            <img src="{{ $review['avatar'] }}" alt="{{ $review['name'] }}" class="rounded-circle" width="36" height="36" style="object-fit: cover;">
                         </div>
                         <div>
                             <div class="d-flex align-items-center gap-2 mb-1">

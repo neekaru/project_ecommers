@@ -42,10 +42,9 @@ class Cart extends Component
     {
         // Pakai data langsung dari model
         // Cek guard yang digunakan, jika customer pakai guard 'customers', ambil id dari situ
-        $userId = auth()->id();
-        if (auth()->guard('customers')->check()) {
-            $userId = auth()->guard('customers')->user()->id;
-        }
+        $userId = auth()->guard('customers')->check()
+            ? auth()->guard('customers')->user()->id
+            : auth()->guard('web')->user()->id;
         return CartModel::with('product')->where('user_id', $userId)->get();
     }
 
@@ -65,12 +64,22 @@ class Cart extends Component
 
         $cartItems = CartModel::with('product')->where('user_id', auth()->guard('customers')->id())->get();
         $this->items = $cartItems->map(function($cart) {
+            $price = $cart->variant_id
+                ? $cart->variantProduct->price ?? ($cart->product->harga_dasar ?? 0)
+                : ($cart->product->harga_dasar ?? 0);
+
+            // Get add-ons
+            $addOnsTotal = 0;
+            foreach ($cart->addons as $addon) {
+                $addOnsTotal += $addon->productAddon->price * $addon->quantity;
+            }
+
             return [
                 'id_produk' => $cart->product->id ?? '-',
                 'nama_produk' => $cart->product->nama_produk ?? '-',
                 'name' => $cart->product->nama_produk ?? '-',
                 'desc' => $cart->product->deskripsi ?? '',
-                'price' => $cart->product->harga_dasar ?? 0,
+                'price' => $price + $addOnsTotal,
                 'qty' => $cart->quantity ?? 1,
                 'image' => $cart->product->gambar_produk ?? 'https://via.placeholder.com/50',
             ];
@@ -93,6 +102,6 @@ class Cart extends Component
 
     public function render()
     {
-        return view('livewire.cart.cart')->layout('components.layouts.app'); // Gunakan layout biasa
+        return view('livewire.cart.cart');
     }
 }

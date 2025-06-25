@@ -26,4 +26,8 @@ class TransactionDetail extends Model
     {
         return $this->belongsTo(Product::class);
     }
+    public function varian()
+    {
+        return $this->belongsTo(\App\Models\VarianProduct::class, 'variant_id');
+    }
 }
