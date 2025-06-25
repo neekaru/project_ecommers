@@ -60,10 +60,15 @@ class Product extends Model
         return $this->hasMany(ProductAddon::class, 'product_id');
     }
 
-        protected static function boot()
+    public function komentars()
+    {
+        return $this->hasMany(\App\Models\Komentar::class, 'product_id')->whereNull('parent_id');
+    }
+
+    protected static function boot()
     {
         parent::boot();
-
+    
         // Generate slug before saving
         static::saving(function ($product) {
             if (empty($product->slug)) {

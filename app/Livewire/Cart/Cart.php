@@ -42,10 +42,10 @@ class Cart extends Component
     {
         // Pakai data langsung dari model
         // Cek guard yang digunakan, jika customer pakai guard 'customers', ambil id dari situ
-        $userId = auth()->guard('customers')->check()
+        $customerId = auth()->guard('customers')->check()
             ? auth()->guard('customers')->user()->id
-            : auth()->guard('web')->user()->id;
-        return CartModel::with('product')->where('user_id', $userId)->get();
+            : null;
+        return CartModel::with('product')->where('customer_id', $customerId)->get();
     }
 
     public function getSubtotalProperty()
@@ -62,7 +62,7 @@ class Cart extends Component
         // dd(auth()->id());
         // dd(auth()->guard('customers')->check(), auth()->guard('customers')->user());
 
-        $cartItems = CartModel::with('product')->where('user_id', auth()->guard('customers')->id())->get();
+        $cartItems = CartModel::with('product')->where('customer_id', auth()->guard('customers')->id())->get();
         $this->items = $cartItems->map(function($cart) {
             $price = $cart->variant_id
                 ? $cart->variantProduct->price ?? ($cart->product->harga_dasar ?? 0)

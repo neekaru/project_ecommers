@@ -18,6 +18,8 @@ class OrderDetail extends Component
     public $product_id;
     public $ratingModel = null;
 
+    public $catatanDisplay = '';
+
     public function mount(Pesanan $order)
     {
         $this->order = $order->load('transaction.details.product', 'transaction.details.varian', 'orderMethod');
@@ -37,6 +39,16 @@ class OrderDetail extends Component
         }
 
         // komentar relationship removed; fetch manually if needed
+
+        // Set catatanDisplay for view with mapping
+        $catatanMap = [
+            'dine_in' => 'Dine In',
+            'take_away' => 'Take Away',
+            'drive_thru' => 'Drive Thru',
+            'catering' => 'Catering',
+        ];
+        $catatanKey = $this->order->transaction?->catatan ?? '-';
+        $this->catatanDisplay = $catatanMap[$catatanKey] ?? ucfirst(str_replace('_', ' ', $catatanKey));
     }
 
     public function setRating($rating)
@@ -80,6 +92,7 @@ class OrderDetail extends Component
     {
         return view('livewire.user.order-detail', [
             'ratingModel' => $this->ratingModel,
+            'catatanDisplay' => $this->catatanDisplay,
         ]);
     }
 } 
