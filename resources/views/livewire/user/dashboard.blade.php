@@ -116,13 +116,40 @@
                                             @if ($order->status == 'selesai' && ($order->komentar || ($detail && \App\Models\Rating::where('product_id', $detail->product_id)->where('customer_id', auth('customers')->id())->exists())))
                                                 <div class="mt-2">
                                                     @php
-                                                        $komentar = $detail ? \App\Models\Komentar::where('product_id', $detail->product_id)->where('customer_id', auth('customers')->id())->first() : null;
+                                                        // Fallback: check if pesanan_id column exists before using it
+                                                        $pesananIdColumn = false;
+                                                        try {
+                                                            $pesananIdColumn = \Schema::hasColumn('komentars', 'pesanan_id');
+                                                        } catch (\Throwable $e) {}
+                                                        if ($detail && $pesananIdColumn) {
+                                                            $komentar = \App\Models\Komentar::where('product_id', $detail->product_id)
+                                                                ->where('customer_id', auth('customers')->id())
+                                                                ->where('pesanan_id', $order->id)
+                                                                ->first();
+                                                        } else {
+                                                            $komentar = $detail ? \App\Models\Komentar::where('product_id', $detail->product_id)
+                                                                ->where('customer_id', auth('customers')->id())
+                                                                ->first() : null;
+                                                        }
                                                     @endphp
                                                     @if ($komentar)
                                                         <p class="mb-1 fst-italic"><strong>Ulasan:</strong> "{{ Str::limit($komentar->isi, 30) }}"</p>
                                                     @endif
                                                     @php
-                                                        $rating = $detail ? \App\Models\Rating::where('product_id', $detail->product_id)->where('customer_id', auth('customers')->id())->first() : null;
+                                                        $pesananIdColumnRating = false;
+                                                        try {
+                                                            $pesananIdColumnRating = \Schema::hasColumn('ratings', 'pesanan_id');
+                                                        } catch (\Throwable $e) {}
+                                                        if ($detail && $pesananIdColumnRating) {
+                                                            $rating = \App\Models\Rating::where('product_id', $detail->product_id)
+                                                                ->where('customer_id', auth('customers')->id())
+                                                                ->where('pesanan_id', $order->id)
+                                                                ->first();
+                                                        } else {
+                                                            $rating = $detail ? \App\Models\Rating::where('product_id', $detail->product_id)
+                                                                ->where('customer_id', auth('customers')->id())
+                                                                ->first() : null;
+                                                        }
                                                     @endphp
                                                     @if ($rating)
                                                         <div class="d-flex align-items-center">

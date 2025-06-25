@@ -68,6 +68,7 @@ class OrderDetail extends Component
             [
                 'customer_id' => Auth::guard('customers')->id(),
                 'product_id' => $this->product_id,
+                'pesanan_id' => $this->order->id,
             ],
             [
                 'rating' => $this->rating,
@@ -78,6 +79,7 @@ class OrderDetail extends Component
             [
                 'customer_id' => Auth::guard('customers')->id(),
                 'product_id' => $this->product_id,
+                'pesanan_id' => $this->order->id,
             ],
             [
                 'isi' => $this->komentar
