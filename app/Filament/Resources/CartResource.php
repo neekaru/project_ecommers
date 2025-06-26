@@ -31,9 +31,9 @@ public static function form(Form $form): Form
             Forms\Components\Card::make()
                 ->schema([
                     // User (relasi ke users)
-                    Forms\Components\Select::make('user_id')
+                    Forms\Components\Select::make('customer_id')
                         ->label('Customer')
-                        ->relationship('user', 'name')  // asumsikan model User punya kolom name
+                        ->relationship('customer', 'nama')  // asumsikan model Customer punya kolom nama
                         ->searchable()
                         ->nullable(),
 
@@ -72,8 +72,8 @@ public static function form(Form $form): Form
 {
     return $table
         ->columns([
-            Tables\Columns\TextColumn::make('user.name')
-                ->label('User')
+            Tables\Columns\TextColumn::make('customer.nama')
+                ->label('Customer')
                 ->sortable()
                 ->searchable(),
 

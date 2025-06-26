@@ -27,7 +27,7 @@ class Checkout extends Component
 
     public function mount()
     {
-        $cartItems = CartModel::with(['product', 'variantProduct', 'addons'])->where('user_id', auth()->guard('customers')->id())->get();
+        $cartItems = CartModel::with(['product', 'variantProduct', 'addons'])->where('customer_id', auth()->guard('customers')->id())->get();
         $this->items = $cartItems->map(function($cart) {
             $price = $cart->variant_id
                 ? $cart->variantProduct->price ?? ($cart->product->harga_dasar ?? 0)
@@ -163,14 +163,28 @@ class Checkout extends Component
             'catatan' => $this->metodePemesanan,
         ]);
 
+        // Hitung ulang total dari cartItems agar pesanan tidak 0
+        $pesananTotal = 0;
+        $pesananCartItems = CartModel::with('product', 'variantProduct', 'addons')->where('customer_id', $customer->id)->get();
+        foreach ($pesananCartItems as $cart) {
+            $price = $cart->variant_id
+                ? $cart->variantProduct->price ?? ($cart->product->harga_dasar ?? 0)
+                : ($cart->product->harga_dasar ?? 0);
+            $addOnsTotal = 0;
+            foreach ($cart->addons as $addon) {
+                $addOnsTotal += $addon->productAddon->price * $addon->quantity;
+            }
+            $pesananTotal += ($price + $addOnsTotal) * $cart->quantity;
+        }
+
         \App\Models\Pesanan::create([
             'customer_id' => $customer->id,
-            'total' => $this->subtotal,
+            'total' => $pesananTotal,
             'status' => 'menunggu',
             'waktu' => now(),
         ]);
 
-        $cartItems = CartModel::with('product')->where('user_id', $customer->id)->get();
+        $cartItems = CartModel::with('product')->where('customer_id', $customer->id)->get();
 
         foreach ($cartItems as $cart) {
             $price = $cart->variant_id
@@ -195,7 +209,7 @@ class Checkout extends Component
             ]);
         }
 
-        CartModel::where('user_id', $customer->id)->delete();
+        CartModel::where('customer_id', $customer->id)->delete();
 
         session()->flash('success', 'Pesanan Anda berhasil dikirim!');
 

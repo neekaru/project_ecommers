@@ -16,6 +16,7 @@ class ProductDetails extends Component
     public $quantity = 1;
     protected $updatesQueryString = ['quantity'];
     protected $listeners = ['refresh' => '$refresh'];
+    public $komentars = [];
 
     public $variant;
     public $selectedAddOns = [];
@@ -29,7 +30,9 @@ class ProductDetails extends Component
     public function mount($id)
     {
         $this->productId = $id;
-        $this->product = Product::with(['varianProducts', 'addons', 'ratings'])->findOrFail($id);
+        $this->product = Product::with(['varianProducts', 'addons', 'ratings', 'komentars' => function($q) {
+            $q->whereNull('parent_id');
+        }, 'komentars.customer'])->findOrFail($id);
 
         // Variants
         $this->variants = $this->product->varianProducts->mapWithKeys(function($variant) {
@@ -50,12 +53,15 @@ class ProductDetails extends Component
         $this->selectedAddOns = [];
 
         // Reviews
-        $this->reviews = $this->product->ratings->map(function($rating) {
+        // Gabungkan komentar dan rating berdasarkan customer_id
+        $ratings = $this->product->ratings->keyBy('customer_id');
+        $this->komentars = $this->product->komentars->map(function($komentar) use ($ratings) {
+            $rating = $ratings->get($komentar->customer_id);
             return [
-                'name' => $rating->customer->name ?? 'Anonim',
-                'rating' => $rating->rating,
-                'comment' => $rating->comment,
-                'avatar' => strtoupper(substr($rating->customer->name ?? 'A', 0, 2))
+                'name' => $komentar->customer->nama ?? 'Anonim',
+                'isi' => $komentar->isi,
+                'rating' => $rating ? $rating->rating : null,
+                'created_at' => $komentar->created_at,
             ];
         })->toArray();
 
@@ -160,7 +166,7 @@ class ProductDetails extends Component
         $customerId = auth()->guard('customers')->user()->id;
 
         $cartItem = \App\Models\Cart::where('product_id', $this->productId)
-            ->where('user_id', $customerId)
+            ->where('customer_id', $customerId)
             ->where('variant_id', $this->variant)
             ->first();
 
@@ -173,7 +179,7 @@ class ProductDetails extends Component
             $cartItem->increment('quantity', $this->quantity);
         } else {
             $cartItem = \App\Models\Cart::create([
-                'user_id' => $customerId,
+                'customer_id' => $customerId,
                 'product_id' => $this->productId ?? null,
                 'variant_id' => $this->variant ?? null,
                 'quantity' => $this->quantity ?? 1,
@@ -202,6 +208,7 @@ class ProductDetails extends Component
             'variants' => $this->variants,
             'addOns' => $this->addOns,
             'reviews' => $this->reviews,
+            'komentars' => $this->komentars,
             'variantPrice' => $this->variantPrice,
             'addOnsTotal' => $this->addOnsTotal,
             'totalPrice' => $this->totalPrice
