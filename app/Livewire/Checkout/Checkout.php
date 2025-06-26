@@ -139,7 +139,7 @@ class Checkout extends Component
                 $customer->nama = $this->nama;
                 $customer->alamat = $this->alamat;
                 $customer->telepon = $this->telepon;
-                $customer->email = $this->telepon . '@mail.com';
+                // $customer->email = $this->telepon . '@mail.com';
                 $customer->save();
             }
         } else {
@@ -148,7 +148,7 @@ class Checkout extends Component
                 [
                     'nama' => $this->nama,
                     'alamat' => $this->alamat,
-                    'email' => $this->telepon . '@mail.com',
+                    // 'email' => $this->telepon . '@mail.com',
                     'password' => bcrypt($this->telepon)
                 ]
             );

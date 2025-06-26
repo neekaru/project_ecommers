@@ -22,26 +22,25 @@ class Login extends Component
     {
         $this->validate();
 
-        $customer = Customer::where('email', $this->email)->first();
+        // Attempt to authenticate first
+        if (auth()->guard('customers')->attempt(['email' => $this->email, 'password' => $this->password])) {
+            return $this->redirect('/user');
+        }
 
-     
+        // If user does not exist, create and login
+        $customer = Customer::where('email', $this->email)->first();
         if (!$customer) {
-            // Create a new customer if not found, hash the password with bcrypt
             $customer = Customer::create([
                 'email' => $this->email,
                 'nama' => 'Guest',
-                'password' => bcrypt($this->password), // bcrypt hash for password
+                'password' => bcrypt($this->password),
             ]);
+            auth()->guard('customers')->login($customer);
+            return $this->redirect('/user');
         }
 
-        if (auth()->guard('customers')->attempt(['email' => $this->email, 'password' => $this->password])) {
-            // return 'oke berhasil login';
-            return $this->redirect('/user');
-        } else {
-            // return 'gagal login';
-            return $this->redirect('/login');
-        }
-     
+        // If user exists but password is wrong, do not create a new user
+        return $this->redirect('/login');
     }
 
     public function redirectToGoogle()

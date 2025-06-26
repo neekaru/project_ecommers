@@ -23,32 +23,33 @@ class SocialiteController extends Controller
             return redirect()->route('login')->with('error', 'Authentication failed. Please try again.');
         }
 
-        // Check if the user already exists in the database
+        // Find by provider_id and provider_name
         $customer = Customer::where('provider_id', $socialUser->getId())
             ->where('provider_name', $provider)
             ->first();
 
         if (!$customer) {
-            $user = Customer::where('email', $socialUser->getEmail())->first();
-            if (!$user) {
-                // Create a new user if it doesn't exist
-                $customer = Customer::create([
-                    'nama' => $socialUser->getName(),
-                    'email' => $socialUser->getEmail(),
-                    'telepon' => null, // Optional, can be set later
-                    'alamat' => null, // Optional, can be set later
+            // If not found, try by email
+            $customer = Customer::where('email', $socialUser->getEmail())->first();
+
+            if ($customer) {
+                // Update provider info if email exists
+                $customer->update([
                     'provider_id' => $socialUser->getId(),
                     'provider_name' => $provider,
                     'avatar' => $socialUser->getAvatar(),
                 ]);
             } else {
-                // If user exists but not linked to social provider, update the provider info
-                $user->update([
+                // Create new user if neither exists
+                $customer = Customer::create([
+                    'nama' => $socialUser->getName(),
+                    'email' => $socialUser->getEmail(),
+                    'telepon' => null,
+                    'alamat' => null,
                     'provider_id' => $socialUser->getId(),
                     'provider_name' => $provider,
                     'avatar' => $socialUser->getAvatar(),
                 ]);
-                $customer = $user;
             }
         }
 
