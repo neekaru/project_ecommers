@@ -39,6 +39,7 @@ class OrderDetail extends Component
         }
 
         // komentar relationship removed; fetch manually if needed
+        $this->komentar = $this->order->komentar?->isi ?? '';
 
         // Set catatanDisplay for view with mapping
         $catatanMap = [
