@@ -35,7 +35,7 @@ class RatingResource extends Resource
                     ->options(function (): array {
                         return TransactionDetail::with('product')->get()->mapWithKeys(function ($item) {
                             // Gunakan id sebagai key, dan label yang informatif, misal: "ID:1 - Product Title"
-                            $productTitle = $item->product ? $item->product->title : 'Produk tidak diketahui';
+                            $productTitle = $item->product ? $item->product->nama_produk : 'Produk tidak diketahui';
                             return [$item->id => "Transaksi #{$item->id} - {$productTitle}"];
                         })->toArray();
                     })
@@ -55,7 +55,7 @@ class RatingResource extends Resource
 
                 Select::make('customer_id')
                     ->label('Customer')
-                    ->relationship('customer', 'name') // Pastikan relasi customer di model Rating sudah benar
+                    ->relationship('customer', 'nama') // Menampilkan nama pelanggan
                     ->searchable()
                     ->required(),
 
@@ -74,11 +74,6 @@ class RatingResource extends Resource
                     })
                     ->searchable()
                     ->required(),
-
-                Textarea::make('review')
-                    ->label('Review')
-                    ->placeholder('Tulis komentar Anda (opsional)')
-                    ->rows(4),
             ]);
     }
 
@@ -87,11 +82,11 @@ class RatingResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('customer.name')->searchable(),
-                Tables\Columns\TextColumn::make('product.title')->searchable(),
-                Tables\Columns\TextColumn::make('rating'),
-                Tables\Columns\TextColumn::make('review'),
-                Tables\Columns\TextColumn::make('created_at')
+                Tables\Columns\TextColumn::make('customer.nama')->label('Customer')->searchable(),
+                Tables\Columns\TextColumn::make('product.nama_produk')->label('Product')->searchable(),
+                Tables\Columns\TextColumn::make('komentar.isi')->label('Review')->limit(50)->placeholder('-'),
+                Tables\Columns\TextColumn::make('rating')->label('Rating'),
+                Tables\Columns\TextColumn::make('created_at')->label('Created At')
             ])
             ->filters([
                 //

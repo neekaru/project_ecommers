@@ -37,7 +37,7 @@ class TransactionResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('customer.name')
+                Tables\Columns\TextColumn::make('customer.nama')
                     ->label('Customer')
                     ->searchable()
                     ->sortable(),

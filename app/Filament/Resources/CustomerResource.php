@@ -43,7 +43,7 @@ public static function table(Table $table): Table
 {
     return $table
         ->columns([
-           Tables\Columns\TextColumn::make('name')->searchable(),
+           Tables\Columns\TextColumn::make('nama')->searchable(),
             Tables\Columns\TextColumn::make('email')->searchable(),
             Tables\Columns\TextColumn::make('created_at')->dateTime(),
         ])

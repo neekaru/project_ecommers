@@ -45,7 +45,7 @@ public static function form(Form $form): Form
 
                 Forms\Components\Select::make('parent_id')
                     ->label('Komentar Induk')
-                    ->relationship('parent', 'isi') // pastikan relasi parent dikonfigurasi di model
+                    ->relationship('induk', 'isi') // relasi ke induk komentar
                     ->searchable()
                     ->placeholder('Komentar utama (jika tidak membalas)')
                     ->nullable(),
@@ -72,7 +72,7 @@ public static function table(Table $table): Table
                 ->label('Customer')
                 ->searchable(),
 
-            Tables\Columns\TextColumn::make('parent.isi')
+            Tables\Columns\TextColumn::make('induk.isi')
                 ->label('Balasan dari')
                 ->limit(30)
                 ->placeholder('-'),

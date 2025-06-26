@@ -25,4 +25,9 @@ class Rating extends Model
     {
         return $this->belongsTo(Customer::class);
     }
+    public function komentar()
+    {
+        return $this->hasOne(\App\Models\Komentar::class, 'product_id', 'product_id')
+            ->whereColumn('customer_id', 'customer_id');
+    }
 }
